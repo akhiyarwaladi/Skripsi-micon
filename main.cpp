@@ -13,11 +13,17 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt){
 int main(){
 	ios::sync_with_stdio(false);
 	int handle, data;
+	long val, sleepp;
+	double OpTime;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
 	while(1){
 		data = serialGetchar(handle) ;
 		cout << data << "\n";
 		if(data > 0){
+			temp = data
+			printf("Received %d\n", temp);
+
+			int n = 2;
 			float Er[n], dEr[n];
 			float HPSp = 5.0;
 			float f1 = 0.83;
