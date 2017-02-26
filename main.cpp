@@ -72,10 +72,10 @@ int main(){
 				int dur4 = dur1;
 				int dur5 = dur2;
 				
-				cmd[0] = dur4;
-				write(file, cmd, 1);
-				cmd[0] = dur5;
-				write(file, cmd, 1);
+				//cmd[0] = dur4;
+				//write(file, cmd, 1);
+				//cmd[0] = dur5;
+				//write(file, cmd, 1);
 				
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime);
