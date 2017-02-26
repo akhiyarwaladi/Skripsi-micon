@@ -12,7 +12,7 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt){
 }
 int main(){
 	ios::sync_with_stdio(false);
-	int handle, data;
+	int handle, data, temp;
 	long val, sleepp;
 	double OpTime;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
