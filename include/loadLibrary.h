@@ -8,3 +8,4 @@
 #include <fcntl.h>
 #include <math.h>
 #include <iostream>
+#include<wiringSerial.h>

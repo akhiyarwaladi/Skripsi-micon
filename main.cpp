@@ -1,5 +1,4 @@
-#include<iostream>
-#include<wiringSerial.h>
+#include "include/call_header.h"
 
 using namespace std;
 static const char *URL_CURL_NEW= "curl -X POST -H \"Authorization: 2a80899620b2cf195d918d5716adc1c5\" -H \"Content-Type: application/x-www-form-urlencoded\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: d0e062b4-49ee-6255-5e05-324b1bad112f\" -d \'suhu=%f&ph=%f&do=%f&hasil=%f&idalat=40664b8af3ac490bb46fd49888c3ab9f\' \"http://172.18.88.11/SiPadat-Server/v1/data_sensor\"";
