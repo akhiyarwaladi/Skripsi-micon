@@ -15,6 +15,7 @@ int main(){
 	int handle, data, temp;
 	long val, sleepp;
 	double OpTime;
+	float awal = 0.0;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
 	while(1){
 		data = serialGetchar(handle) ;
