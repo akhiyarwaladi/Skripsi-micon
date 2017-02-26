@@ -21,7 +21,7 @@ int main(){
 		data = serialGetchar(handle) ;
 		cout << data << "\n";
 		if(data > 0){
-			temp = data
+			temp = data;
 			printf("Received %d\n", temp);
 
 			int n = 2;
