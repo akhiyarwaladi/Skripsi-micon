@@ -2,25 +2,27 @@
 
 using namespace std;
 static const char *URL_CURL_NEW= "curl -X POST -H \"Authorization: 2a80899620b2cf195d918d5716adc1c5\" -H \"Content-Type: application/x-www-form-urlencoded\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: d0e062b4-49ee-6255-5e05-324b1bad112f\" -d \'suhu=%f&ph=%f&do=%f&hasil=%f&idalat=40664b8af3ac490bb46fd49888c3ab9f\' \"http://172.18.88.11/SiPadat-Server/v1/data_sensor\"";
-
-void sendDataToServer(double hpsp, double hpc, double uk, double opt){
+static const char *URL_CURL= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
+void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
 	char str[500];
-	sprintf(str, URL_CURL_NEW, hpsp, hpc, uk, opt);
+	sprintf(str, URL_CURL, hpsp, hpc, uk, opt, idalat);
 	puts(str);
 	system(str);
 	printf("\n");
 }
 int main(){
 	ios::sync_with_stdio(false);
-	int handle, data, temp;
+	int handle, data, temp, idalat;
 	long val, sleepp;
 	double OpTime;
 	float awal = 0.0;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
 	while(1){
-		data = serialGetchar(handle) ;
-		cout << data << "\n";
-		if(data > 0){
+		avail = serialDataAvail(handle)
+		cout << avail << "\n";
+		if(avail == 2){
+			idalat = serialGetchar(handle) ;
+			data = serialGetchar(handle) ;
 			temp = data;
 			printf("Received %d\n", temp);
 
@@ -79,18 +81,19 @@ int main(){
 				//write(file, cmd, 1);
 				
 				awal = temp;
-				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime);
+				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				sleep(sleepp);
 				__Uk[1] = 0;
-				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime);
+				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 			}
 			
 			else{
 				awal = temp;
-				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime);
+				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				sleep(7);
 			}
 		}
+		sleep(1);
 	}
 	return 0;
 }
