@@ -1,11 +1,10 @@
 #include <string.h>
-#include <unistd.h>
+#include <unistd.h> //fungsi sleep
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <math.h>
 #include <iostream>
-#include<wiringSerial.h>
+#include <wiringSerial.h> //komunikasi serial xbee
