@@ -20,7 +20,7 @@ int main(){
 	while(1){
 		avail = serialDataAvail(handle);
 		cout << avail << "\n";
-		if(avail == 2){
+		if(avail >= 2){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
 			temp = data;
@@ -82,15 +82,16 @@ int main(){
 				
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				sleep(sleepp);
-				__Uk[1] = 0;
-				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				//sleep(sleepp);
+				//__Uk[1] = 0;
+				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				sleep(2)
 			}
 			
 			else{
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				sleep(7);
+				sleep(2);
 			}
 		}
 		sleep(1);
