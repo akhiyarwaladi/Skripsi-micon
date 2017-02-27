@@ -18,7 +18,7 @@ int main(){
 	float awal = 0.0;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
 	while(1){
-		avail = serialDataAvail(handle)
+		avail = serialDataAvail(handle);
 		cout << avail << "\n";
 		if(avail == 2){
 			idalat = serialGetchar(handle) ;
