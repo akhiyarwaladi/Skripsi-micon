@@ -11,7 +11,7 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt, double ida
 	printf("\n");
 }
 int main(){
-	ios::sync_with_stdio(false);
+	//ios::sync_with_stdio(false);
 	int handle, data, temp, idalat, avail;
 	long val, sleepp;
 	double OpTime;
