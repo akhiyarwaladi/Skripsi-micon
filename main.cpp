@@ -12,7 +12,7 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt, double ida
 }
 int main(){
 	ios::sync_with_stdio(false);
-	int handle, data, temp, idalat;
+	int handle, data, temp, idalat, avail;
 	long val, sleepp;
 	double OpTime;
 	float awal = 0.0;
