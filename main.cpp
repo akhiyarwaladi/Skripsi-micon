@@ -85,7 +85,7 @@ int main(){
 				//sleep(sleepp);
 				//__Uk[1] = 0;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				sleep(2)
+				sleep(2);
 			}
 			
 			else{
