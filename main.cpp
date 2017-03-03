@@ -67,7 +67,6 @@ int main(){
 				double time = __Uk[1];
 				double dur = time*1*60;
 				OpTime = dur;
-				sleepp = (int)dur + 7;
 				printf("Durasi %f\n" , dur);
 
 				dur1 = dur/255;
@@ -77,7 +76,8 @@ int main(){
 				printf("Tambahan  %f\n" , dur2);
 				int dur4 = dur1;
 				int dur5 = dur2;
-				serialPutchar (handle, 300);
+				serialPutchar (handle, dur1);
+				serialPutchar (handle, dur2);
 				//cmd[0] = dur4;
 				//write(file, cmd, 1);
 				//cmd[0] = dur5;
@@ -88,13 +88,13 @@ int main(){
 				//sleep(sleepp);
 				//__Uk[1] = 0;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				sleep(2);
+				sleep(1);
 			}
 			
 			else{
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				sleep(2);
+				sleep(1);
 			}
 		}
 		sleep(1);
