@@ -17,7 +17,7 @@ int main(){
 	double OpTime;
 	float awal = 0.0;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
-	void serialFlush (handle);
+	serialFlush (handle);
 	while(1){
 		avail = serialDataAvail(handle);
 		cout << avail << "\n";
