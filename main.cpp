@@ -25,7 +25,9 @@ int main(){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
 			temp = data;
+			printf("Id Alat %d\n", idalat);
 			printf("Received %d\n", temp);
+			
 
 			int n = 2;
 			float Er[n], dEr[n];
