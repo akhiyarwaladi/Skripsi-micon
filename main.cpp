@@ -76,6 +76,7 @@ int main(){
 				printf("Tambahan  %f\n" , dur2);
 				int dur4 = dur1;
 				int dur5 = dur2;
+				serialPutchar (handle, idalat);
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
 				//cmd[0] = dur4;
