@@ -101,6 +101,7 @@ int main(){
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = to_string(idalat) + message;
 				sendNotification(regId, title, message);
+				
 				//sleep(sleepp);
 				//__Uk[1] = 0;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
