@@ -13,7 +13,7 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt, double ida
 	printf("\n");
 }
 
-void sendNotification(string to, string title, string message){
+void sendNotification(char to, char title, char message){
 	char str[1000];
 	sprintf(str, URL_NOTIFICATION, to, title, message);
 	puts(str);
