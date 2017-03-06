@@ -108,7 +108,7 @@ int main(){
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
-				message = " Tidak berfungsi"
+				message = " Tidak berfungsi";
 				
 				//sleep(sleepp);
 				//__Uk[1] = 0;
@@ -121,7 +121,7 @@ int main(){
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
-				message = " Tidak berfungsi"
+				message = " Tidak berfungsi";
 				sleep(1);
 			}
 		}
