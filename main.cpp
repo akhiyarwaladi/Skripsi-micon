@@ -110,7 +110,7 @@ int main(){
 			else{
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				sendNotification(regId, title, message);
+				sendNotification(regId.c_str(), title.c_str(), message.c_str());
 				sleep(1);
 			}
 		}
