@@ -99,10 +99,6 @@ int main(){
 				serialPutchar (handle, idalat);
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
-				//cmd[0] = dur4;
-				//write(file, cmd, 1);
-				//cmd[0] = dur5;
-				//write(file, cmd, 1);
 				
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
@@ -110,9 +106,6 @@ int main(){
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
 				
-				//sleep(sleepp);
-				//__Uk[1] = 0;
-				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				sleep(1);
 			}
 			
