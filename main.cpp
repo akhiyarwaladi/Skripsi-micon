@@ -28,25 +28,22 @@ string IntToString (int a)
 }
 
 int main(){
-	//ios::sync_with_stdio(false);
 	int handle, data, temp, idalat, avail;
 	string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	string title = "Periksa Alat";
 	string message = " Tidak berfungsi";
-	long val, sleepp;
-	double OpTime;
-	float awal = 0.0;
+	float awal = 0.0, OpTime;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
 	serialFlush (handle);
 	while(1){
 		avail = serialDataAvail(handle);
-		printf("avail %d\n", avail);
+		printf("Data Available= %d\n", avail);
 		if(avail >= 2){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
 			temp = data;
-			printf("Id Alat %d\n", idalat);
-			printf("Received %d\n", temp);
+			printf("Id Alat= %d\n", idalat);
+			printf("Data Received= %d\n", temp);
 			
 
 			int n = 2;
