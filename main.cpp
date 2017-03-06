@@ -45,7 +45,6 @@ int main(){
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", temp);
 			
-
 			int n = 2;
 			float Er[n], dEr[n];
 			float HPSp = 5.0;
@@ -54,8 +53,7 @@ int main(){
 			float Um = 1.00;
 			float __Uk[n];
 			float HPc[n] = {awal, temp};
-
-			double dur1, dur2, dur3;
+			double dur1, dur2;
 
 			for (int i=0; i<n; i++){
 				Er[i] = HPc[i]-HPSp;
@@ -91,8 +89,7 @@ int main(){
 				dur2 = dur - (dur1*255);
 				printf("Konstanta %f\n" , dur1);
 				printf("Tambahan  %f\n" , dur2);
-				int dur4 = dur1;
-				int dur5 = dur2;
+
 				serialPutchar (handle, idalat);
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
