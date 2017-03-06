@@ -40,7 +40,7 @@ int main(){
 	serialFlush (handle);
 	while(1){
 		avail = serialDataAvail(handle);
-		cout << avail << "\n";
+		printf("avail %d\n", avail);
 		if(avail >= 2){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
