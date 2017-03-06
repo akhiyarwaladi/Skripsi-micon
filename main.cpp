@@ -26,7 +26,7 @@ int main(){
 	int handle, data, temp, idalat, avail;
 	string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	string title = "Periksa Alat";
-	string message = "Tidak berfungsi"
+	string message = "Tidak berfungsi";
 	long val, sleepp;
 	double OpTime;
 	float awal = 0.0;
