@@ -14,7 +14,7 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt, double ida
 }
 
 void sendNotification(string to, string title, string message){
-	char str[1000]
+	char str[1000];
 	sprintf(str, URL_NOTIFICATION, to, title, message);
 	puts(str);
 	system(str);
