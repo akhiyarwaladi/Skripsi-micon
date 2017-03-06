@@ -1,4 +1,5 @@
 #include <string>
+#include <sstream>
 #include <unistd.h> //fungsi sleep
 #include <errno.h>
 #include <stdio.h>

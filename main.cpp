@@ -20,6 +20,13 @@ void sendNotification(string to, string title, string message){
 	printf("\n");
 }
 
+string IntToString (int a)
+{
+    ostringstream temp;
+    temp<<a;
+    return temp.str();
+}
+
 int main(){
 	//ios::sync_with_stdio(false);
 	int handle, data, temp, idalat, avail;
@@ -99,7 +106,7 @@ int main(){
 				
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				message = to_string(idalat) + message;
+				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
 				
 				//sleep(sleepp);
@@ -111,7 +118,7 @@ int main(){
 			else{
 				awal = temp;
 				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				message = to_string(idalat) + message;
+				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
 				sleep(1);
 			}
