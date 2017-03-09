@@ -32,5 +32,5 @@ void hitung(float awal, int temp){
 	for (int i = 0; i < n; i++){
 		printf("Uk %f\n" , __Uk[i]);
 	}
-	return __Uk[0], __Uk[1];
+	return __Uk[0];
 }
