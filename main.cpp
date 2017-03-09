@@ -80,7 +80,7 @@ int main(){
 			}
 		
 			if(__Uk[1]>0){
-				double time = uk2;
+				double time = __Uk[1];
 				double dur = time*1*60;
 				OpTime = dur;
 				printf("Durasi %f\n" , dur);
