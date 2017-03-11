@@ -1,2 +1,1 @@
 # Skripsi-micon
-# Skripsi-leonardo
