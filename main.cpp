@@ -96,7 +96,7 @@ int main(){
 				serialPutchar (handle, dur2);
 				
 				awal = temp;
-				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
@@ -107,7 +107,7 @@ int main(){
 			
 			else{
 				awal = temp;
-				sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
