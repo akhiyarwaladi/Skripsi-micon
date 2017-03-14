@@ -5,10 +5,10 @@ static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "ida
 #define MQTT_PASSWORD "admin"
 #define MQTT_TOPIC "test"
 
-#define SERVER "localhost"
+#define SERVER "192.168.1.140"
 #define USERNAME "root"
-#define PASSWORD "ncc1p8"
-#define DATABASE "mysqlmqtt"
+#define PASSWORD ""
+#define DATABASE "sigap"
 void publish(hpsp, hpc, uk, optime, idalat){
 	struct mosquitto *mosq = NULL;
 	 
