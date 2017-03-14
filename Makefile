@@ -1,4 +1,4 @@
-all: main subs
+all: main subscribe
 
 OPTIONAL_LIBS=-lcrypto -lssl -lcares
 LIBS=-lmosquitto -lpthread -lmysqlclient -lwiringPi
@@ -8,7 +8,7 @@ test-pub: test-pub.cpp
 	g++ $(FLAGS) -o main main.cpp $(LIBS) $(OPTIONAL_LIBS) 
 
 test-sub: test-sub.cpp
-	g++ $(FLAGS) -o subs subs.cpp $(LIBS) $(OPTIONAL_LIBS) 
+	g++ $(FLAGS) -o subscribe subscribe.cpp $(LIBS) $(OPTIONAL_LIBS) 
 
 clean:
-	rm -f *.o main subs
+	rm -f *.o main subscribe
