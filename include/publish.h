@@ -1,4 +1,3 @@
-
 #define MQTT_HOSTNAME "localhost" 
 #define MQTT_PORT 1883
 #define MQTT_USERNAME "admin"
