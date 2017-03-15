@@ -9,6 +9,12 @@
 #include <my_global.h>
 #include <string>
 
+#define MQTT_HOSTNAME "localhost" 
+#define MQTT_PORT 1883
+#define MQTT_USERNAME "admin"
+#define MQTT_PASSWORD "admin"
+#define MQTT_TOPIC "test"
+
 using namespace std;
 /*
  * my_message_callback. 
