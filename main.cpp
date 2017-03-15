@@ -32,7 +32,7 @@ int main(){
 	string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	string title = "Periksa Alat";
 	string message = " Tidak berfungsi";
-	float awal = 0.0, OpTime, uk1, uk2;
+	float awal = 0.0, OpTime;
 	handle = serialOpen("/dev/ttyAMA0", 9600) ;
 	serialFlush (handle);
 	while(1){
