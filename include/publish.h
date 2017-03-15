@@ -10,9 +10,9 @@
 #define DATABASE "sigap"
 
 using namespace std;
-static const char *payload = "{"hpsp": %f, "hpc": %f, "uk": %f, "optime": %f, "idalat": %f}";
+static const char *payload = "{"hpsp": %s, "hpc": %s, "uk": %s, "optime": %s, "idalat": %s}";
 
-void publish(float hpsp, float hpc, float uk, float optime, float idalat){
+void publish(string hpsp, string hpc, string uk, string optime, string idalat){
 	string query;
 	struct mosquitto *mosq = NULL;
 	mosquitto_lib_init();
