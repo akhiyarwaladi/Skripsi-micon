@@ -11,6 +11,7 @@
 using namespace std;
 static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "idalat":%f}";
 void publish(float hpsp, float hpc, float uk, float optime, float idalat){
+	string query;
 	struct mosquitto *mosq = NULL;
 	 
 	// Initialize the Mosquitto library
@@ -35,7 +36,6 @@ void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 		exit (-1);
 	}
 
-	int i;
 	char text[100];
 
 	sprintf (text, payload, hpsp, hpc, uk, optime, idalat);
