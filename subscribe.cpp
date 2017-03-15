@@ -16,33 +16,20 @@
 #define MQTT_TOPIC "test"
 
 using namespace std;
-/*
- * my_message_callback. 
- * Called whenever a new message arrives
- */
+
 void my_message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message)
 {
-// Note: nothing in the Mosquitto docs or examples suggests that we
-//  must free this message structure after processing it.
 	string query, pay;
 	pay = (char *)message->payload;
 	printf ("Got message: %s\n", pay.c_str());
 	
 }
 
-/*
- * Start here
- */
 int main (int argc, char **argv)
 {
 	struct mosquitto *mosq = NULL;
-
-
-	// Initialize the Mosquitto library
 	mosquitto_lib_init();
 
-	// Create a new Mosquito runtime instance with a random client ID,
-	//  and no application-specific callback data.  
 	mosq = mosquitto_new (NULL, true, NULL);
 	if (!mosq)
 	{
@@ -61,10 +48,6 @@ int main (int argc, char **argv)
 		exit (-1);
 	}
 
-	// Subscribe to the specified topic. Multiple topics can be
-	//  subscribed, but only one is used in this simple example.
-	//  Note that we don't specify what to do with the received
-	//  messages at this point
 	ret = mosquitto_subscribe(mosq, NULL, MQTT_TOPIC, 0);
 	if (ret)
 	{
@@ -78,9 +61,6 @@ int main (int argc, char **argv)
 	// Wait for new messages
 	mosquitto_loop_forever (mosq, -1, 1);
 
-	// Tody up. In this simple example, this point is never reached. We can
-	//  force the mosquitto_loop_forever call to exit by disconnecting
-	//  the session in the message-handling callback if required.
 	mosquitto_destroy (mosq);
 	mosquitto_lib_cleanup();
 
