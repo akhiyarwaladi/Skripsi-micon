@@ -8,17 +8,15 @@
 #define USERNAME "root"
 #define PASSWORD ""
 #define DATABASE "sigap"
+
 using namespace std;
-static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "idalat":%f}";
+static const char *payload = "{"hpsp": %f, "hpc": %f, "uk": %f, "optime": %f, "idalat": %f}";
+
 void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 	string query;
 	struct mosquitto *mosq = NULL;
-	 
-	// Initialize the Mosquitto library
 	mosquitto_lib_init();
 
-	// Create a new Mosquito runtime instance with a random client ID,
-	//  and no application-specific callback data.  
 	mosq = mosquitto_new (NULL, true, NULL);
 	if (!mosq)
 	{
@@ -37,10 +35,9 @@ void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 	}
 
 	char text[100];
-
 	sprintf (text, payload, hpsp, hpc, uk, optime, idalat);
-	// Publish the message to the topic
 	ret = mosquitto_publish (mosq, NULL, MQTT_TOPIC, strlen (text), text, 0, false);
+	
 	if (ret)
 	{
 		fprintf (stderr, "Can't publish to Mosquitto server\n");
@@ -57,7 +54,6 @@ void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 
     if (connect){
         cout << "Connection Established Successfully......." << endl;
-        //cout << "Your Name is " << empFirstName << endl;
     }
 
     query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES('"+idalat+"', '"+hpsp+"', '"+hpc+", '"+uk+"', '"+optime+"')";
@@ -70,13 +66,9 @@ void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 
     mysql_close (connect);
 
-
-	// We need a short delay here, to prevent the Mosquito library being
-	//  torn down by the operating system before all the network operations
-	//  are finished.
 	sleep (1);
 
-	// Tidy up
+
 	mosquitto_disconnect (mosq);
 	mosquitto_destroy (mosq);
 	mosquitto_lib_cleanup();
