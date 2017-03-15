@@ -1,4 +1,4 @@
-static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "idalat":%f}";
+
 #define MQTT_HOSTNAME "localhost" 
 #define MQTT_PORT 1883
 #define MQTT_USERNAME "admin"
@@ -9,7 +9,8 @@ static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "ida
 #define USERNAME "root"
 #define PASSWORD ""
 #define DATABASE "sigap"
-void publish(hpsp, hpc, uk, optime, idalat){
+static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "idalat":%f}";
+void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 	struct mosquitto *mosq = NULL;
 	 
 	// Initialize the Mosquitto library
