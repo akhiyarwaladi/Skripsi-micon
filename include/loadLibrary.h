@@ -9,3 +9,6 @@
 #include <math.h>
 #include <iostream>
 #include <wiringSerial.h> //komunikasi serial xbee
+#include <mosquitto.h>
+#include <mysql.h>
+#include <my_global.h>
