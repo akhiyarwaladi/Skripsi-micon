@@ -3,7 +3,7 @@
 using namespace std;
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
-
+const int pwmPin = 18;
 void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
 	char str[500];
 	sprintf(str, URL_TOSERVER, hpsp, hpc, uk, opt, idalat);
@@ -28,6 +28,8 @@ string IntToString (int a)
 }
 
 int main(){
+	wiringPiSetupGpio(); // Initialize wiringPi -- using Broadcom pin numbers
+    pinMode(pwmPin, PWM_OUTPUT); // Set PWM LED as PWM output
 	int handle, data, temp, idalat, avail;
 	string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	string title = "Periksa Alat";
