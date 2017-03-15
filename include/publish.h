@@ -8,6 +8,7 @@
 #define USERNAME "root"
 #define PASSWORD ""
 #define DATABASE "sigap"
+using namespace std;
 static const char *payload = "{"hpsp": %f, "hpc": %f, "uk":%f, "optime":%f, "idalat":%f}";
 void publish(float hpsp, float hpc, float uk, float optime, float idalat){
 	struct mosquitto *mosq = NULL;
