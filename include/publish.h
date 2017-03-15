@@ -1,18 +1,7 @@
-#define MQTT_HOSTNAME "localhost" 
-#define MQTT_PORT 1883
-#define MQTT_USERNAME "admin"
-#define MQTT_PASSWORD "admin"
-#define MQTT_TOPIC "test"
-
-#define SERVER "192.168.1.140"
-#define USERNAME "root"
-#define PASSWORD ""
-#define DATABASE "sigap"
-
 using namespace std;
-static const char *payload = "{"hpsp": %s, "hpc": %s, "uk": %s, "optime": %s, "idalat": %s}";
+static const char *payload = "{"hpsp": %s, "hpc": %s, "uk": %s, "optime": %s, "idalat": %d}";
 
-void publish(string hpsp, string hpc, string uk, string optime, string idalat){
+void publish(float hpsp, float hpc, float uk, float optime, int idalat){
 	string query;
 	struct mosquitto *mosq = NULL;
 	mosquitto_lib_init();
