@@ -1,5 +1,15 @@
+#define MQTT_HOSTNAME "localhost" 
+#define MQTT_PORT 1883
+#define MQTT_USERNAME "admin"
+#define MQTT_PASSWORD "admin"
+#define MQTT_TOPIC "test"
+
+#define SERVER "192.168.1.140"
+#define USERNAME "root"
+#define PASSWORD ""
+#define DATABASE "sigap"
 using namespace std;
-static const char *payload = "{"hpsp": %s, "hpc": %s, "uk": %s, "optime": %s, "idalat": %d}";
+static const char *payload = "{hpsp: %s, hpc: %s, uk: %s, optime: %s, idalat: %d}";
 
 void publish(float hpsp, float hpc, float uk, float optime, int idalat){
 	string query;
