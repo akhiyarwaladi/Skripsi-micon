@@ -31,7 +31,7 @@ void sendNotification(string to, string title, string message){
 	printf("\n");
 }
 
-void publish(float hpsp, float hpc, float uk, float optime, int idalat){
+void publish(double hpsp, double hpc, double uk, double optime, double idalat){
 	string query;
 	struct mosquitto *mosq = NULL;
 	mosquitto_lib_init();
@@ -53,7 +53,7 @@ void publish(float hpsp, float hpc, float uk, float optime, int idalat){
 		exit (-1);
 	}
 
-	char text[100];
+	char text[500];
 	sprintf (text, payload, hpsp, hpc, uk, optime, idalat);
 	ret = mosquitto_publish (mosq, NULL, MQTT_TOPIC, strlen (text), text, 0, false);
 	
