@@ -1,8 +1,6 @@
 #include "loadLibrary.h"
 #include "calculate_fuzzy.h"
-#include "curlrest.h"
 #include "publish.h"
-
 
 #define MQTT_HOSTNAME "localhost" 
 #define MQTT_PORT 1883
