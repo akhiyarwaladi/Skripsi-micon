@@ -80,7 +80,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
 
     cout << query << endl;
 
-    if (mysql_query(connect, query.c_str())){
+    if (mysql_query(connect, query)){
         cout << "Success.... \n" << endl;
     }   
 
@@ -92,6 +92,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
 	mosquitto_destroy (mosq);
 	mosquitto_lib_cleanup();
 }
+
 string IntToString (int a)
 {
     ostringstream temp;
