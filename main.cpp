@@ -77,10 +77,9 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
     }
 
     query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES ('20', '20', '20', '20', '20')";
-
     cout << query << endl;
 
-    if (mysql_query(connect, query)){
+    if (mysql_query(connect, query.c_str())){
         cout << "Success.... \n" << endl;
     }   
 
