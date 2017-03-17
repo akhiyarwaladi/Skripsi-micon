@@ -76,7 +76,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
         cout << "Connection Established Successfully......." << endl;
     }
 
-    query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES ('idalat', 'hpsp', 'hpc', 'uk', 'optime')";
+    query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES ('20', '20', '20', '20', '20')";
 
     cout << query << endl;
 
