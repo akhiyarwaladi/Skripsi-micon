@@ -1,8 +1,20 @@
 #include "include/call_header.h"
+#define MQTT_HOSTNAME "localhost" 
+#define MQTT_PORT 1883
+#define MQTT_USERNAME "admin"
+#define MQTT_PASSWORD "admin"
+#define MQTT_TOPIC "test"
+
+#define SERVER "192.168.1.142"
+#define USERNAME "root"
+#define PASSWORD ""
+#define DATABASE "sigap"
 
 using namespace std;
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
+static const char *payload = "{hpsp: %s, hpc: %s, uk: %s, optime: %s, idalat: %d}";
+
 void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
 	char str[500];
 	sprintf(str, URL_TOSERVER, hpsp, hpc, uk, opt, idalat);
@@ -17,6 +29,68 @@ void sendNotification(string to, string title, string message){
 	puts(str);
 	system(str);
 	printf("\n");
+}
+
+void publish(float hpsp, float hpc, float uk, float optime, int idalat){
+	string query;
+	struct mosquitto *mosq = NULL;
+	mosquitto_lib_init();
+
+	mosq = mosquitto_new (NULL, true, NULL);
+	if (!mosq)
+	{
+		fprintf (stderr, "Can't initialize Mosquitto library\n");
+		exit (-1);
+	}
+
+	mosquitto_username_pw_set (mosq, MQTT_USERNAME, MQTT_PASSWORD);
+
+	// Establish a connection to the MQTT server. Do not use a keep-alive ping
+	int ret = mosquitto_connect (mosq, MQTT_HOSTNAME, MQTT_PORT, 0);
+	if (ret)
+	{
+		fprintf (stderr, "Can't connect to Mosquitto server\n");
+		exit (-1);
+	}
+
+	char text[100];
+	sprintf (text, payload, hpsp, hpc, uk, optime, idalat);
+	ret = mosquitto_publish (mosq, NULL, MQTT_TOPIC, strlen (text), text, 0, false);
+	
+	if (ret)
+	{
+		fprintf (stderr, "Can't publish to Mosquitto server\n");
+		exit (-1);
+	}
+	MYSQL *connect;
+    connect = mysql_init(NULL);
+
+    if (connect){
+        cout << "Connection Established Successfully......." << endl;
+    }
+
+    connect = mysql_real_connect(connect, SERVER, USERNAME, PASSWORD, DATABASE, 0,NULL,0);
+
+    if (connect){
+        cout << "Connection Established Successfully......." << endl;
+    }
+
+    query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES(idalat, hpsp, hpc, uk, optime)";
+
+    cout << query << endl;
+
+    if (mysql_query(connect, query.c_str())){
+        cout << "Success.... \n" << endl;
+    }   
+
+    mysql_close (connect);
+
+	sleep (1);
+
+
+	mosquitto_disconnect (mosq);
+	mosquitto_destroy (mosq);
+	mosquitto_lib_cleanup();
 }
 string IntToString (int a)
 {
@@ -98,7 +172,7 @@ int main(){
 				
 				awal = temp;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				//publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
@@ -109,7 +183,7 @@ int main(){
 			else{
 				awal = temp;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				//publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
 				message = IntToString(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
