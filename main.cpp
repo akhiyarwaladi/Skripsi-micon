@@ -62,6 +62,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
 		fprintf (stderr, "Can't publish to Mosquitto server\n");
 		exit (-1);
 	}
+	/*
 	MYSQL *connect;
     connect = mysql_init(NULL);
 
@@ -84,7 +85,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
     }   
 
     mysql_close (connect);
-
+    */
 	sleep (1);
 
 
