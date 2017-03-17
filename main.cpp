@@ -13,7 +13,7 @@
 using namespace std;
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
-static const char *payload = "{hpsp: %f, hpc: %f, uk: %f, optime: %f, idalat: %f}";
+static const char *MQTT_PAYLOAD = "{"hpsp": %f, "hpc": %f, "uk": %f, "optime": %f, "idalat": %f}";
 
 void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
 	char str[500];
@@ -54,7 +54,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
 	}
 
 	char text[500];
-	sprintf (text, payload, hpsp, hpc, uk, optime, idalat);
+	sprintf (text, MQTT_PAYLOAD, hpsp, hpc, uk, optime, idalat);
 	ret = mosquitto_publish (mosq, NULL, MQTT_TOPIC, strlen (text), text, 0, false);
 	
 	if (ret)
