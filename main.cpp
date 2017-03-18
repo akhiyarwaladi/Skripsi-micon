@@ -13,6 +13,7 @@
 using namespace std;
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
+static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/SiPadat-Server/v1/alatuser\""
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
 
 void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
@@ -26,6 +27,14 @@ void sendDataToServer(double hpsp, double hpc, double uk, double opt, double ida
 void sendNotification(string to, string title, string message){
 	char str[1000];
 	sprintf(str, URL_NOTIFICATION, to.c_str(), title.c_str(), message.c_str());
+	puts(str);
+	system(str);
+	printf("\n");
+}
+
+void updateStatusAlat(double rssi, double battery, double idalat){
+	char str[500];
+	sprintf(str, URL_UPDATEALAT, rssi, battery, idalat);
 	puts(str);
 	system(str);
 	printf("\n");
@@ -122,6 +131,7 @@ int main(){
 			printf("Signal Strength= %d\n", rssi);
 			printf("Battery level= %d\n", volt);
 			
+			updateStatusAlat(rssi, battery, idalat);
 			//uk1, uk2 = hitung(awal, temp);
 			int n = 2;
 			float Er[n], dEr[n];
