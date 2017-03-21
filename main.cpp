@@ -11,11 +11,52 @@
 #define DATABASE "sigap"
 
 using namespace std;
+
+size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
+{ //callback must have this declaration
+    //buf is a pointer to the data that curl has for us
+    //size*nmemb is the size of the buffer
+
+    for (int c = 0; c<size*nmemb; c++)
+    {
+        data.push_back(buf[c]);
+    }
+    return size*nmemb; //tell curl how many bytes we handled
+}
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
 static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/SiPadat-Server/v1/alatuser\""
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
+static const char *INSERT_QUERY = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES (%f, %f, %f, %f, %f)";
 
+void getStatusAlat(){
+	CURL* curl; //our curl object
+
+    curl_global_init(CURL_GLOBAL_ALL); //pretty obvious
+    curl = curl_easy_init();
+
+    curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.1.105/SiPadat-Server/v1/getalatuser");
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //tell curl to output its progress
+
+    curl_easy_perform(curl);
+    cout << endl << data << endl;
+    //cin.get();
+
+    curl_easy_cleanup(curl);
+    curl_global_cleanup();
+	
+	Json::Value jsonData;
+    Json::Reader jsonReader;
+	jsonReader.parse(data, jsonData);
+	
+	cout << "Successfully parsed JSON data" << std::endl;
+	cout << "\nJSON data received:" << std::endl;
+	cout << jsonData.toStyledString() << std::endl;
+	int status = jsonData["status"].asUInt64()
+	return status;
+	
+}
 void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
 	char str[500];
 	sprintf(str, URL_TOSERVER, hpsp, hpc, uk, opt, idalat);
@@ -84,11 +125,12 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
     if (connect){
         cout << "Connection Established Successfully......." << endl;
     }
-
-    query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES ('14', '20', '20', '20', '20')";
-    cout << query << endl;
-
-    if (mysql_query(connect, query.c_str())){
+	char que[500];
+    //query = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES ('14', '20', '20', '20', '20')";
+    sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
+	//cout << query << endl;
+	//if (mysql_query(connect, que.c_str())){
+    if (mysql_query(connect, que)){
         cout << "Success.... \n" << endl;
     }   
 
@@ -108,9 +150,50 @@ string IntToString (int a)
     return temp.str();
 }
 
-int main(){
+double distance(int rssi)
+{
+	distance = 10 ^ ((30+rssi)/(10*1.8));
+	return distance;
+}
 
-	int handle, volt, rssi, data, temp, idalat, avail;
+void calcPositionX(){
+	a[0][0] = (d1^2 - d2^2) - (x1^2 - x2^2) - (y1^2 - y2^2);
+	a[0][1] = 2 * (y2 - y1);
+	a[1][0] = (d1^2 - d3^2) - (x1^2 - x3^2) - (y1^2 - y3^2);
+	a[1][1] = 2 * (y3 - y1);
+	detA	= a[0][0]*a[1][1] - a[1][0]*a[0][1];
+
+	c[0][0] = 2 * (x2 - x1);
+	c[0][1] = 2 * (y2 - y1);
+	c[1][0] = 2 * (x3 - x1);
+	c[1][1] = 2 * (y3 - y1);
+	detC	= c[0][0]*c[1][1] - c[1][0]*c[0][1];
+
+	X = detA / detC;
+	return X;
+}
+
+void calcPositionY(){
+	
+	b[0][0] = 2 * (x2 - x1);
+	b[0][1] = (d1^2 - d2^2) - (x1^2 - x2^2) - (y1^2 - y2^2);
+	b[1][0] = 2 * (x3 - x1);
+	b[1][1] = (d1^2 - d3^2) - (x1^2 - x3^2) - (y1^2 - y3^2);
+	detB	= b[0][0]*b[1][1] - b[1][0]*b[0][1];
+
+	c[0][0] = 2 * (x2 - x1);
+	c[0][1] = 2 * (y2 - y1);
+	c[1][0] = 2 * (x3 - x1);
+	c[1][1] = 2 * (y3 - y1);
+	detC	= c[0][0]*c[1][1] - c[1][0]*c[0][1];
+	
+	Y = detB / detC;
+	return Y;
+}
+
+int main(){
+	
+	int handle, volt, rssi, data, temp, idalat, avail, status;
 	string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	string title = "Periksa Alat";
 	string message = " Tidak berfungsi";
@@ -119,7 +202,9 @@ int main(){
 	serialFlush (handle);
 	while(1){
 		avail = serialDataAvail(handle);
+		status = getStatusAlat();
 		printf("Data Available= %d\n", avail);
+		printf("Status Alat= %d\n", status);
 		if(avail >= 4){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;

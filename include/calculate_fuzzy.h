@@ -39,7 +39,7 @@ float Dk(float f1, float Er, float dEr) ///fungsi magnitude
     return Dk;
 }
 
-float mD( float Dk, float f2) ///fungsi miuD
+float mD(float Dk, float f2) ///fungsi miuD
 {
     float mD;
     if (Dk >= 0 && Dk <= f2) mD = fngrade(Dk, 0, f2);
