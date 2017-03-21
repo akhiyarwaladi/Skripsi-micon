@@ -287,6 +287,14 @@ int main(){
 				sleep(1);
 			}
 		}
+		if(avail >= 4){
+			idalat = serialGetchar(handle) ;
+			data = serialGetchar(handle) ;
+			printf("Id Alat= %d\n", idalat);
+			printf("Data Received= %d\n", data);
+			updateStatusAlat(rssi, battery, idalat);
+			
+		}
 		sleep(1);
 	}
 	return 0;
