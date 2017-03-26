@@ -9,7 +9,7 @@
 #define USERNAME "root"
 #define PASSWORD ""
 #define DATABASE "sigap"
-
+typedef std::chrono::high_resolution_clock Clock;
 using namespace std;
 
 size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
@@ -23,6 +23,7 @@ size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
     }
     return size*nmemb; //tell curl how many bytes we handled
 }
+
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
 static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/SiPadat-Server/v1/alatuser\""
@@ -57,6 +58,7 @@ void getStatusAlat(){
 	return status;
 	
 }
+
 void sendDataToServer(double hpsp, double hpc, double uk, double opt, double idalat){
 	char str[500];
 	sprintf(str, URL_TOSERVER, hpsp, hpc, uk, opt, idalat);
@@ -150,47 +152,20 @@ string IntToString (int a)
     return temp.str();
 }
 
-double distance(int rssi)
-{
-	distance = 10 ^ ((30+rssi)/(10*1.8));
-	return distance;
-}
-
-void calcPositionX(){
-	a[0][0] = (d1^2 - d2^2) - (x1^2 - x2^2) - (y1^2 - y2^2);
-	a[0][1] = 2 * (y2 - y1);
-	a[1][0] = (d1^2 - d3^2) - (x1^2 - x3^2) - (y1^2 - y3^2);
-	a[1][1] = 2 * (y3 - y1);
-	detA	= a[0][0]*a[1][1] - a[1][0]*a[0][1];
-
-	c[0][0] = 2 * (x2 - x1);
-	c[0][1] = 2 * (y2 - y1);
-	c[1][0] = 2 * (x3 - x1);
-	c[1][1] = 2 * (y3 - y1);
-	detC	= c[0][0]*c[1][1] - c[1][0]*c[0][1];
-
-	X = detA / detC;
-	return X;
-}
-
-void calcPositionY(){
+void Jalan(){
+	double satu = distance(30);
+	printf("satu= %g ", satu);
+	double dua = distance(25);
+	printf("dua= %g ", dua);
+	double tiga = distance(60);
+	printf("tiga= %g\n", tiga);
+	double X = calcPositionX(satu, dua, tiga);
+	double Y = calcPositionY(satu, dua, tiga);
 	
-	b[0][0] = 2 * (x2 - x1);
-	b[0][1] = (d1^2 - d2^2) - (x1^2 - x2^2) - (y1^2 - y2^2);
-	b[1][0] = 2 * (x3 - x1);
-	b[1][1] = (d1^2 - d3^2) - (x1^2 - x3^2) - (y1^2 - y3^2);
-	detB	= b[0][0]*b[1][1] - b[1][0]*b[0][1];
-
-	c[0][0] = 2 * (x2 - x1);
-	c[0][1] = 2 * (y2 - y1);
-	c[1][0] = 2 * (x3 - x1);
-	c[1][1] = 2 * (y3 - y1);
-	detC	= c[0][0]*c[1][1] - c[1][0]*c[0][1];
+	printf("X= %g ", X);
+	printf("Y= %g\n", Y);
 	
-	Y = detB / detC;
-	return Y;
 }
-
 int main(){
 	
 	int handle, volt, rssi, data, temp, idalat, avail, status;
@@ -200,7 +175,13 @@ int main(){
 	float awal = 0.0, OpTime;
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
+	auto t1 = Clock::now();
 	while(1){
+		auto t2 = Clock::now();
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 3){
+			Jalan();
+			t1 = t2;
+		}
 		avail = serialDataAvail(handle);
 		status = getStatusAlat();
 		printf("Data Available= %d\n", avail);

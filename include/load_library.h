@@ -15,3 +15,5 @@
 #include <my_global.h>
 #include <curl/curl.h> //get data from api
 #include <jsoncpp/json/json.h> //decode json response
+#include <math.h> //
+#include <chrono> // timer function
