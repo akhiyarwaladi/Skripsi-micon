@@ -25,6 +25,7 @@ double calcPositionX(double d1, double d2, double d3){
 
 	double X = detA / detC;
 	return X;
+
 }
 
 double calcPositionY(double d1, double d2, double d3){

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <chrono> // timer function
 #include <stdio.h>
-#include <unistd.h> //fungsi sleep
 #include <thread> // multi threading
 #include <string.h>
 #include <errno.h>

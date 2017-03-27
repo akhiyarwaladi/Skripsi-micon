@@ -10,13 +10,14 @@
 #define USERNAME "root"
 #define PASSWORD ""
 #define DATABASE "sigap"
-static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
-static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
-static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/SiPadat-Server/v1/alatuser\"";
+static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/Sigap-Server/v1/data_sensor\"";
+static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/Sigap-Server/v1/sendsingle\"";
+static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/Sigap-Server/v1/alatuser\"";
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
 static const char *INSERT_QUERY = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES (%f, %f, %f, %f, %f)";
 
 typedef std::chrono::high_resolution_clock Clock;
+
 std::string data; //will hold the url's contents
 
 size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
@@ -122,7 +123,7 @@ void Jalan(){
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98/Sigap-Server/v1/getalatuser");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://172.20.33.108/Sigap-Server/v1/getalatuser");
 	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallback);
 
 	struct curl_slist *headers = NULL;
@@ -153,10 +154,10 @@ void Jalan(){
 	printf("satu= %g ", satu);
 	printf("dua= %g ", dua);
 	printf("tiga= %g\n", tiga);
-	
+		
 	double X = calcPositionX(satu, dua, tiga);
 	double Y = calcPositionY(satu, dua, tiga);
-	
+
 	printf("X= %g ", X);
 	printf("Y= %g\n", Y);
 	
@@ -191,44 +192,12 @@ int main(){
 			printf("Battery level= %d\n", battery);
 			
 			updateStatusAlat(rssi, battery, idalat);
-			//uk1, uk2 = hitung(awal, temp);
-			int n = 2;
-			float Er[n], dEr[n], HPc[n];
+			float uk = hitung(awal, temp);
 			float HPSp = 5.0;
-			float f1 = 0.83;
-			float f2 = 1.00;
-			float Um = 1.00;
-			float __Uk[n];
 			double dur1, dur2;
-			
-			HPc[0] = awal;
-			HPc[1] = temp;
-			for (int i=0; i<n; i++){
-				Er[i] = HPc[i]-HPSp;
-				printf("Er %f\n" , Er[i]);
-			}
-			for (int i=0; i<n; i++){
-				if (i==0) dEr[i] = Er[i];
-				else if (i==10) dEr[10] = 0;
-				else dEr[i] = Er[i]-Er[i-1];
-				printf("dEr %f\n" , dEr[i]);
-			}
-			for (int i = 0; i < n; i++){
-				float _theta = theta(f1, Er[i], dEr[i]);
-				float _Dk = Dk(f1, Er[i], dEr[i]);
-				float _mN = mN(_theta);
-				float _mD = mD(_Dk, f2);
-				float _Uk = Uk(_mN, _mD, Um);
-
-				__Uk[i] = _Uk;
-			}
-			for (int i = 0; i < n; i++){
-				printf("Uk %f\n" , __Uk[i]);
-			}
-		
-			if(__Uk[1]>0){
-				double time = __Uk[1];
-				double dur = time*1*60;
+			if(uk>0){
+				double tConst = uk;
+				double dur = tConst*1*60;
 				OpTime = dur;
 				printf("Durasi %f\n" , dur);
 
@@ -242,24 +211,26 @@ int main(){
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
 				
+				publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
 				
-				sleep(1);
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			}
 			
 			else{
+				publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
 				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
-				publish(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
-				sleep(1);
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			}
 		}
 		if(avail >= 2){
@@ -268,9 +239,10 @@ int main(){
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", data);
 			updateStatusAlat(rssi, battery, idalat);
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			
 		}
-		sleep(1);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	return 0;
 }
