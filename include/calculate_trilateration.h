@@ -1,7 +1,6 @@
 double distance(double rssi)
 {
 	double distance = pow(10.0, ((-45+rssi)/(10*1.8)));
-
 	return distance;
 }
 

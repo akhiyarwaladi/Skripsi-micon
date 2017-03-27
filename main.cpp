@@ -1,4 +1,5 @@
 #include "include/call_header.h"
+
 #define MQTT_HOSTNAME "localhost" 
 #define MQTT_PORT 1883
 #define MQTT_USERNAME "admin"
@@ -9,13 +10,11 @@
 #define USERNAME "root"
 #define PASSWORD ""
 #define DATABASE "sigap"
-
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: ed7edb7931ff62ca7275630ddedfa617\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.1.140/SiPadat-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.1.140/SiPadat-Server/v1/sendsingle\"";
 static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/SiPadat-Server/v1/alatuser\"";
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
 static const char *INSERT_QUERY = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES (%f, %f, %f, %f, %f)";
-
 
 typedef std::chrono::high_resolution_clock Clock;
 std::string data; //will hold the url's contents
@@ -25,7 +24,7 @@ size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
     //buf is a pointer to the data that curl has for us
     //size*nmemb is the size of the buffer
 
-    for (int c = 0; c<size*nmemb; c++)
+    for (unsigned int c = 0; c<size*nmemb; c++)
     {
         data.push_back(buf[c]);
     }
