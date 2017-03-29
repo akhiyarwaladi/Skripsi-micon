@@ -1,9 +1,9 @@
-std::string data;
-size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
+std::string dataRssi;
+size_t writeCallbackRssi(char* buf, size_t size, size_t nmemb, void* up)
 {
     for (unsigned int c = 0; c<size*nmemb; c++)
     {
-        data.push_back(buf[c]);
+        dataRssi.push_back(buf[c]);
     }
     return size*nmemb; //tell curl how many bytes we handled
 }
@@ -14,10 +14,10 @@ double distance(double rssi)
 	return distance;
 }
 
-double calcPositionX(double d1, double d2, double d3){
+double * calcPosition(double d1, double d2, double d3){
 	double x1 = 2.0, x2 = 8.0, x3 = 2.0;
 	double y1 = 2.0, y2 = 8.0, y3 = 8.0;
-	double a[10][10] = {0.0}, c[10][10] = {0.0};
+	double a[10][10] = {0.0}, b[10][10] = {0.0}, c[10][10] = {0.0};
 
 	a[0][0] = (d1*d1 - d2*d2) - (x1*x1 - x2*x2) - (y1*y1 - y2*y2);
 	a[0][1] = 2.0 * (y2 - y1);
@@ -25,50 +25,39 @@ double calcPositionX(double d1, double d2, double d3){
 	a[1][1] = 2.0 * (y3 - y1);
 	double detA	= (a[0][0]*a[1][1]) - (a[1][0]*a[0][1]);
 	
+	b[0][0] = 2.0 * (x2 - x1);
+	b[0][1] = (d1*d1 - d2*d2) - (x1*x1 - x2*x2) - (y1*y1 - y2*y2);
+	b[1][0] = 2.0 * (x3 - x1);
+	b[1][1] = (d1*d1 - d3*d3) - (x1*x1 - x3*x3) - (y1*y1 - y3*y3);
+	double detB	= (b[0][0]*b[1][1]) - (b[1][0]*b[0][1]);
+	
 	c[0][0] = 2.0 * (x2 - x1);
 	c[0][1] = 2.0 * (y2 - y1);
 	c[1][0] = 2.0 * (x3 - x1);
 	c[1][1] = 2.0 * (y3 - y1);
 	double detC	= (c[0][0]*c[1][1]) - (c[1][0]*c[0][1]);
 	printf("detA= %g ", detA);
+	printf("detB= %g ", detB);
 	printf("detC= %g\n", detC);
 
 	double X = detA / detC;
-	return X;
-
-}
-
-double calcPositionY(double d1, double d2, double d3){
-	double x1 = 2.0, x2 = 8.0, x3 = 2.0;
-	double y1 = 2.0, y2 = 8.0, y3 = 8.0;	
-	double b[10][10] = {0.0}, c[10][10] = {0.0};
-
-	b[0][0] = 2.0 * (x2 - x1);
-	b[0][1] = (d1*d1 - d2*d2) - (x1*x1 - x2*x2) - (y1*y1 - y2*y2);
-	b[1][0] = 2.0 * (x3 - x1);
-	b[1][1] = (d1*d1 - d3*d3) - (x1*x1 - x3*x3) - (y1*y1 - y3*y3);
-	double detB	= (b[0][0]*b[1][1]) - (b[1][0]*b[0][1]);
-
-	c[0][0] = 2.0 * (x2 - x1);
-	c[0][1] = 2.0 * (y2 - y1);
-	c[1][0] = 2.0 * (x3 - x1);
-	c[1][1] = 2.0 * (y3 - y1);
-
-	double detC	= (c[0][0]*c[1][1]) - (c[1][0]*c[0][1]);
-	printf("detB= %g ", detB);
-	printf("detC= %g\n", detC);
-	
 	double Y = detB / detC;
-	return Y;
+	
+	static double ret[5];
+	ret[0]=X;
+	ret[1]=Y;
+	return ret;
+
 }
 
-void Jalan(){
-	
+
+void Jalan(){	
+	dataRssi = "";
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://172.29.144.175/Sigap-Server/v1/getalatuser");
-	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallback);
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98/Sigap-Server/v1/getalatuser");
+	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallbackRssi);
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "Authorization: 5d55ed73dda2730ec3e01a5f8c631966");
@@ -80,7 +69,7 @@ void Jalan(){
 	
 	Json::Value jsonData;
     Json::Reader jsonReader;
-	jsonReader.parse(data, jsonData);
+	jsonReader.parse(dataRssi, jsonData);
 	
 	//std::cout << jsonData.toStyledString() << std::endl;
 	int rsatu = jsonData["tasks"][1]["rssi"].asInt();
@@ -99,9 +88,10 @@ void Jalan(){
 	printf("dua= %g ", dua);
 	printf("tiga= %g\n", tiga);
 		
-	double X = calcPositionX(satu, dua, tiga);
-	double Y = calcPositionY(satu, dua, tiga);
-
+	double *pos;
+	pos = calcPosition(satu,dua,tiga);
+	double X = *(pos+0);
+	double Y = *(pos+1);
 	printf("X= %g ", X);
 	printf("Y= %g\n", Y);
 }

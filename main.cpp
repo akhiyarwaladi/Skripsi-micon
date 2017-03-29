@@ -2,7 +2,7 @@
 typedef std::chrono::high_resolution_clock Clock;
 int main(){
 	
-	int handle, battery, rssi, data, temp, idalat, avail;
+	int handle, battery, rssi, data, temp, idalat, avail, *p;
 	std::string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
@@ -10,14 +10,19 @@ int main(){
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
 	auto t1 = Clock::now();
+	
 	while(1){
+		p = getStatus();
+		printf("14= %d ", *(p+0));
+		printf("15= %d ", *(p+1));
+		printf("16= %d\n", *(p+2));
 		auto t2 = Clock::now();
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
 			Jalan();
 			temp = 5;
 			float uk = hitung(awal, temp);
 			printf("uk adalah= %f\n" , uk);
-			sendDataToServer(5, temp, uk, 60, 14);
+			//sendDataToServer(5, temp, uk, 60, 14);
 			t1 = t2;		
 		}
 		avail = serialDataAvail(handle);
