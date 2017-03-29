@@ -1,3 +1,13 @@
+std::string data;
+size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
+{
+    for (unsigned int c = 0; c<size*nmemb; c++)
+    {
+        data.push_back(buf[c]);
+    }
+    return size*nmemb; //tell curl how many bytes we handled
+}
+
 double distance(double rssi)
 {
 	double distance = pow(10.0, ((-45+rssi)/(10*1.8)));
@@ -43,16 +53,55 @@ double calcPositionY(double d1, double d2, double d3){
 	c[0][1] = 2.0 * (y2 - y1);
 	c[1][0] = 2.0 * (x3 - x1);
 	c[1][1] = 2.0 * (y3 - y1);
-	/*
-	printf("c00= %g ", c[0][0]);
-	printf("c01= %g ", c[0][1]);
-	printf("c10= %g ", c[1][0]);
-	printf("c11= %g ", c[1][1]);
-	*/
+
 	double detC	= (c[0][0]*c[1][1]) - (c[1][0]*c[0][1]);
 	printf("detB= %g ", detB);
 	printf("detC= %g\n", detC);
 	
 	double Y = detB / detC;
 	return Y;
+}
+
+void Jalan(){
+	
+	CURL *hnd = curl_easy_init();
+
+	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://172.29.144.175/Sigap-Server/v1/getalatuser");
+	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallback);
+
+	struct curl_slist *headers = NULL;
+	headers = curl_slist_append(headers, "Authorization: 5d55ed73dda2730ec3e01a5f8c631966");
+	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+	curl_easy_perform(hnd);
+
+    curl_easy_cleanup(hnd);
+    curl_global_cleanup();
+	
+	Json::Value jsonData;
+    Json::Reader jsonReader;
+	jsonReader.parse(data, jsonData);
+	
+	//std::cout << jsonData.toStyledString() << std::endl;
+	int rsatu = jsonData["tasks"][1]["rssi"].asInt();
+	int rdua = jsonData["tasks"][2]["rssi"].asInt();
+	int rtiga = jsonData["tasks"][3]["rssi"].asInt();
+	
+	printf("rssisatu= %d ", rsatu);
+	printf("rssidua= %d ", rdua);
+	printf("rssitiga= %d\n", rtiga);
+	
+	double satu = distance(rsatu);
+	double dua = distance(rdua);
+	double tiga = distance(rtiga);
+	
+	printf("satu= %g ", satu);
+	printf("dua= %g ", dua);
+	printf("tiga= %g\n", tiga);
+		
+	double X = calcPositionX(satu, dua, tiga);
+	double Y = calcPositionY(satu, dua, tiga);
+
+	printf("X= %g ", X);
+	printf("Y= %g\n", Y);
 }
