@@ -2,6 +2,8 @@
 #include <chrono>				// timer function
 #include <stdio.h>				// standar printf scanf
 #include <thread>				// multi threading
+#include <fstream>				// save output file
+#include <ctime>
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>

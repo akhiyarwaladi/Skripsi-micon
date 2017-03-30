@@ -1,7 +1,10 @@
 #include "include/call_header.h"
 typedef std::chrono::high_resolution_clock Clock;
+
 int main(){
-	
+
+	// create a name for the file output
+	std::string filename = "exampleOutput.csv";
 	int handle, battery, rssi, data, temp, idalat, avail, *p;
 	std::string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	std::string title = "Periksa Alat";
@@ -11,12 +14,26 @@ int main(){
 	serialFlush (handle);
 	auto t1 = Clock::now();
 	
+	std::ofstream myfile;
+	std::remove ("example.csv");
+	myfile.open ("example.csv");
+	// write the file headers
+    myfile << "RSSI A" << "," << "RSSI B" << "," << "RSSI C" << std::endl;
+
+
 	while(1){
+
 		p = getStatus();
 		printf("14= %d ", *(p+0));
 		printf("15= %d ", *(p+1));
 		printf("16= %d\n", *(p+2));
+
 		auto t2 = Clock::now();
+		std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+
+		std::time_t t = std::chrono::system_clock::to_time_t(p);
+		// write the needed data
+		myfile << 10 << "," << 10 << "," << std::ctime(&t) << std::endl;
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
 			Jalan();
 			temp = 5;
@@ -90,5 +107,7 @@ int main(){
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
+	myfile.close();
+	
 	return 0;
 }
