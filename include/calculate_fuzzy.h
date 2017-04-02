@@ -1,4 +1,12 @@
-float pi = 3.141592654;
+std::string dataSetPoint;
+size_t writeCallbackSetPoint(char* buf, size_t size, size_t nmemb, void* up)
+{
+    for (unsigned int c = 0; c<size*nmemb; c++)
+    {
+        dataSetPoint.push_back(buf[c]);
+    }
+    return size*nmemb; //tell curl how many bytes we handled
+}
 
 float fngrade(float X, float x1, float x2) ///fungsi trigonometri
 {
@@ -8,6 +16,7 @@ float fngrade(float X, float x1, float x2) ///fungsi trigonometri
 
 float theta(float f1, float Er, float dEr) ///fungsi menentukan kuadran 1,2,3,4
 {
+	float pi = 3.141592654;
 	float theta;
 	if (dEr == 0) dEr = 0.00001;
     float sudut = atan(f1*dEr/Er) * 180/pi;
@@ -50,11 +59,34 @@ float Uk(float mN, float mD, float Um) ///fungsi Uk (hasil akhir)
     return Uk;
 }
 
-float hitung(float awal, float temp)
+float hitung(float awal, float temp, int idalat)
 {
 	int n = 2;
 	float Er[n], dEr[n], HPc[n];
-	float HPSp = 5.0;
+	dataSetPoint = "";
+	CURL *hnd = curl_easy_init();
+	std::string URL = "http://192.168.43.98/Sigap-Server/v1/getalatuser/";
+	URL = URL + std::to_string(idalat);
+
+	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+	curl_easy_setopt(hnd, CURLOPT_URL, URL);
+	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallbackSetPoint);
+
+	struct curl_slist *headers = NULL;
+	headers = curl_slist_append(headers, "Authorization: 5d55ed73dda2730ec3e01a5f8c631966");
+	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+	curl_easy_perform(hnd);
+
+    curl_easy_cleanup(hnd);
+    curl_global_cleanup();
+	
+	Json::Value jsonData;
+    Json::Reader jsonReader;
+	jsonReader.parse(dataSetPoint, jsonData);
+	
+	//std::cout << jsonData.toStyledString() << std::endl;
+	float HPSp = jsonData["tasks"][1]["setPoint"].asInt();
+	printf("HPSp %f\n" , HPSp);
 	float f1 = 0.83;
 	float f2 = 1.00;
 	float Um = 1.00;

@@ -1,5 +1,4 @@
 #include "include/call_header.h"
-typedef std::chrono::high_resolution_clock Clock;
 
 int main(){
 
@@ -12,7 +11,7 @@ int main(){
 	float awal = 0.0, OpTime;
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
-	auto t1 = Clock::now();
+	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	std::ofstream myfile;
 	std::remove ("example.csv");
@@ -28,7 +27,7 @@ int main(){
 		printf("15= %d ", *(p+1));
 		printf("16= %d\n", *(p+2));
 
-		auto t2 = Clock::now();
+		auto t2 = std::chrono::high_resolution_clock::now();
 		std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
 
 		std::time_t t = std::chrono::system_clock::to_time_t(p);
@@ -37,7 +36,7 @@ int main(){
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
 			Jalan();
 			temp = 5;
-			float uk = hitung(awal, temp);
+			float uk = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , uk);
 			//sendDataToServer(5, temp, uk, 60, 14);
 			t1 = t2;		
@@ -56,7 +55,7 @@ int main(){
 			printf("Battery level= %d\n", battery);
 			
 			updateStatusAlat(rssi, battery, idalat);
-			float uk = hitung(awal, temp);
+			float uk = hitung(awal, temp, idalat);
 			float HPSp = 5.0;
 			double dur1, dur2;
 			if(uk>0){
