@@ -1,5 +1,13 @@
 #include "include/call_header.h"
-
+std::string getDate()
+{
+    std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
+    std::time_t t = std::chrono::system_clock::to_time_t(tp);
+    const char * tc = ctime(&t);
+    std::string str = std::string {tc};
+    str.pop_back();
+    return str;
+}
 int main(){
 
 	// create a name for the file output
@@ -19,6 +27,7 @@ int main(){
 	// write the file headers
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
 
+	
 	while(1){
 
 		p = getStatus();
@@ -26,9 +35,8 @@ int main(){
 		printf("15= %d ", *(p+1));
 		printf("16= %d\n", *(p+2));
 
-		auto t2 = std::chrono::high_resolution_clock::now();
-		
 		//function to call every t seconds
+		auto t2 = std::chrono::high_resolution_clock::now();
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 60){
 			Jalan();
 			//temp = 5;
@@ -45,11 +53,9 @@ int main(){
 			data = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
 			battery = serialGetchar(handle) ;
-			// get date time now
-			std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
-			std::time_t t = std::chrono::system_clock::to_time_t(p);
+
 			// write the needed data
-			myfile << idalat << "," << data << "," << rssi << "," << battery << " " << std::ctime(&t) << std::endl;
+			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
 			temp = data;
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", temp);
