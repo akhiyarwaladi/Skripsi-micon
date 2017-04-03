@@ -66,10 +66,11 @@ float hitung(float awal, float temp, int idalat)
 	dataSetPoint = "";
 	CURL *hnd = curl_easy_init();
 	std::string URL = "http://192.168.43.98/Sigap-Server/v1/getalatuser/";
-	URL = URL + std::to_string(idalat);
+	std::string id = std::to_string(idalat);
+	URL = URL + id;
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
-	curl_easy_setopt(hnd, CURLOPT_URL, URL);
+	curl_easy_setopt(hnd, CURLOPT_URL, URL.c_str());
 	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallbackSetPoint);
 
 	struct curl_slist *headers = NULL;
@@ -85,7 +86,7 @@ float hitung(float awal, float temp, int idalat)
 	jsonReader.parse(dataSetPoint, jsonData);
 	
 	//std::cout << jsonData.toStyledString() << std::endl;
-	float HPSp = jsonData["tasks"][1]["setPoint"].asInt();
+	float HPSp = jsonData["tasks"][0]["setPoint"].asInt();
 	printf("HPSp %f\n" , HPSp);
 	float f1 = 0.83;
 	float f2 = 1.00;
