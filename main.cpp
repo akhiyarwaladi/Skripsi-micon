@@ -49,7 +49,7 @@ int main(){
 			std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
 			std::time_t t = std::chrono::system_clock::to_time_t(p);
 			// write the needed data
-			myfile << idalat << "," << data << "," << "rssi" << "," << "battery" << std::ctime(&t) << std::endl;
+			myfile << idalat << "," << data << "," << rssi << "," << battery << " " << std::ctime(&t) << std::endl;
 			temp = data;
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", temp);
