@@ -29,7 +29,7 @@ int main(){
 		auto t2 = std::chrono::high_resolution_clock::now();
 		
 		//function to call every t seconds
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 60){
 			Jalan();
 			//temp = 5;
 			//float uk = hitung(awal, temp, 14);
@@ -40,7 +40,7 @@ int main(){
 		
 		avail = serialDataAvail(handle);
 		printf("Data Available= %d\n", avail);
-		if(avail == 4){
+		if(avail >= 1){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
