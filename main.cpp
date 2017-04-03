@@ -17,8 +17,7 @@ int main(){
 	std::remove ("example.csv");
 	myfile.open ("example.csv");
 	// write the file headers
-    myfile << "RSSI A" << "," << "RSSI B" << "," << "RSSI C" << std::endl;
-
+    myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
 
 	while(1){
 
@@ -28,19 +27,17 @@ int main(){
 		printf("16= %d\n", *(p+2));
 
 		auto t2 = std::chrono::high_resolution_clock::now();
-		std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
-
-		std::time_t t = std::chrono::system_clock::to_time_t(p);
-		// write the needed data
-		myfile << 10 << "," << 10 << "," << std::ctime(&t) << std::endl;
+		
+		//function to call every t seconds
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
 			Jalan();
-			temp = 5;
-			float uk = hitung(awal, temp, 14);
-			printf("uk adalah= %f\n" , uk);
+			//temp = 5;
+			//float uk = hitung(awal, temp, 14);
+			//printf("uk adalah= %f\n" , uk);
 			//sendDataToServer(5, temp, uk, 60, 14);
 			t1 = t2;		
 		}
+		
 		avail = serialDataAvail(handle);
 		printf("Data Available= %d\n", avail);
 		if(avail == 4){
@@ -48,12 +45,18 @@ int main(){
 			data = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
 			battery = serialGetchar(handle) ;
+			// get date time now
+			std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+			std::time_t t = std::chrono::system_clock::to_time_t(p);
+			// write the needed data
+			myfile << idalat << "," << data << "," << "rssi" << "," << "battery" << std::ctime(&t) << std::endl;
 			temp = data;
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", temp);
 			printf("Signal Strength= %d\n", rssi);
 			printf("Battery level= %d\n", battery);
 			
+			/*
 			updateStatusAlat(rssi, battery, idalat);
 			float uk = hitung(awal, temp, idalat);
 			float HPSp = 5.0;
@@ -94,6 +97,7 @@ int main(){
 				message = " Tidak berfungsi";
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			}
+			*/
 		}
 		if(avail == 2){
 			idalat = serialGetchar(handle);
