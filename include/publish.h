@@ -4,7 +4,7 @@
 #define MQTT_PASSWORD "admin"
 #define MQTT_TOPIC "test"
 
-#define SERVER "10.0.2.15"
+#define SERVER "localhost"
 #define USERNAME "root"
 #define PASSWORD "rickss12"
 #define DATABASE "todo"
@@ -57,11 +57,11 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
         std::cout << "Connection Established Successfully......." << std::endl;
     }
 	char que[1000];
-    query = "INSERT INTO todo_list (name) VALUES ('akhiyar')";
-    //sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
+    //query = "INSERT INTO todo_list (name) VALUES ('akhiyar')";
+    sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
 	//std::cout << query << std::endl;
-	//if (mysql_query(connect, que)){
-    if (mysql_query(connect, query.c_str())){
+	if (mysql_query(connect, que)){
+    //if (mysql_query(connect, query.c_str())){
         std::cout << "Success.... \n" << std::endl;
     }   
 
