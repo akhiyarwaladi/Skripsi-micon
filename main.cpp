@@ -45,7 +45,7 @@ int main(){
 			float uk = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , uk);
 			//sendDataToServer(5, temp, uk, 60, 14);
-			publish(5, temp, uk, 60, 14)
+			publish(5, temp, uk, 60, 14);
 			//*/
 			t1 = t2;		
 		}
