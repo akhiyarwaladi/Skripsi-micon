@@ -38,14 +38,15 @@ int main(){
 
 		//function to call every t seconds
 		auto t2 = std::chrono::high_resolution_clock::now();
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 60){
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 20){
 			Jalan();
-			/*test send data to server
+			///*test send data to server
 			temp = 5;
 			float uk = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , uk);
-			sendDataToServer(5, temp, uk, 60, 14);
-			*/
+			//sendDataToServer(5, temp, uk, 60, 14);
+			publish(5, temp, uk, 60, 14)
+			//*/
 			t1 = t2;		
 		}
 		
