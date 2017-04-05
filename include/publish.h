@@ -4,9 +4,9 @@
 #define MQTT_PASSWORD "admin"
 #define MQTT_TOPIC "test"
 
-#define SERVER "192.168.43.98"
+#define SERVER "10.0.2.15"
 #define USERNAME "root"
-#define PASSWORD ""
+#define PASSWORD "rickss12"
 #define DATABASE "todo"
 
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
