@@ -7,7 +7,7 @@
 #define SERVER "localhost"
 #define USERNAME "root"
 #define PASSWORD "rickss12"
-#define DATABASE "todo"
+#define DATABASE "sigap"
 
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
 static const char *INSERT_QUERY = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES (%f, %f, %f, %f, %f)";
