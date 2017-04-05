@@ -29,20 +29,23 @@ int main(){
 
 	
 	while(1){
-
+		/*get status actuator every loop
 		p = getStatus();
 		printf("14= %d ", *(p+0));
 		printf("15= %d ", *(p+1));
 		printf("16= %d\n", *(p+2));
+		*/
 
 		//function to call every t seconds
 		auto t2 = std::chrono::high_resolution_clock::now();
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 60){
 			Jalan();
-			//temp = 5;
-			//float uk = hitung(awal, temp, 14);
-			//printf("uk adalah= %f\n" , uk);
-			//sendDataToServer(5, temp, uk, 60, 14);
+			/*test send data to server
+			temp = 5;
+			float uk = hitung(awal, temp, 14);
+			printf("uk adalah= %f\n" , uk);
+			sendDataToServer(5, temp, uk, 60, 14);
+			*/
 			t1 = t2;		
 		}
 		
@@ -57,12 +60,13 @@ int main(){
 			// write the needed data
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
 			temp = data;
+			
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", temp);
 			printf("Signal Strength= %d\n", rssi);
 			printf("Battery level= %d\n", battery);
 			
-			/*
+			/* logic after get data from router
 			updateStatusAlat(rssi, battery, idalat);
 			float uk = hitung(awal, temp, idalat);
 			float HPSp = 5.0;
