@@ -57,11 +57,11 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
         std::cout << "Connection Established Successfully......." << std::endl;
     }
 	char que[1000];
-    query = "INSERT INTO datasensor (id_alat) VALUES ('14')";
-    //sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
+    //query = "INSERT INTO datasensor (id_alat) VALUES ('14')";
+    sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
 	std::cout << query << std::endl;
-	//if (mysql_query(connect, que.c_str())){
-    if (mysql_query(connect, query.c_str())){
+	if (mysql_query(connect, que)){
+    //if (mysql_query(connect, query.c_str())){
         std::cout << "Success.... \n" << std::endl;
     }   
 
