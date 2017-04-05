@@ -38,7 +38,7 @@ int main(){
 
 		//function to call every t seconds
 		auto t2 = std::chrono::high_resolution_clock::now();
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 20){
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 10){
 			Jalan();
 			///*test send data to server
 			temp = 5;
