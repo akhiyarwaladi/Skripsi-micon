@@ -61,7 +61,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
     //sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
 	//cout << query << endl;
 	//if (mysql_query(connect, que.c_str())){
-    if (mysql_query(connect, que.c_str())){
+    if (mysql_query(connect, query.c_str())){
         std::cout << "Success.... \n" << std::endl;
     }   
 
