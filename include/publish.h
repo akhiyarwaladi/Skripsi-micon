@@ -34,7 +34,7 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
 		exit (-1);
 	}
 
-	char text[500];
+	char text[1000];
 	sprintf (text, MQTT_PAYLOAD, hpsp, hpc, uk, optime, idalat);
 	ret = mosquitto_publish (mosq, NULL, MQTT_TOPIC, strlen (text), text, 0, false);
 	
