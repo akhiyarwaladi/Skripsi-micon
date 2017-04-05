@@ -4,7 +4,7 @@
 #define MQTT_PASSWORD "admin"
 #define MQTT_TOPIC "test"
 
-#define SERVER "localhost"
+#define SERVER "10.0.2.15"
 #define USERNAME "root"
 #define PASSWORD "rickss12"
 #define DATABASE "sigap"
