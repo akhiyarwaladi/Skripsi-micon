@@ -7,7 +7,7 @@
 #define SERVER "192.168.43.98"
 #define USERNAME "root"
 #define PASSWORD ""
-#define DATABASE "sigap"
+#define DATABASE "todo"
 
 static const char *MQTT_PAYLOAD = "{\"hpsp\": %f, \"hpc\": %f, \"uk\": %f, \"optime\": %f, \"idalat\": %f}";
 static const char *INSERT_QUERY = "INSERT INTO datasensor (id_alat, hpsp, hpc, uk, optime) VALUES (%f, %f, %f, %f, %f)";
@@ -57,11 +57,11 @@ void publish(double hpsp, double hpc, double uk, double optime, double idalat){
         std::cout << "Connection Established Successfully......." << std::endl;
     }
 	char que[1000];
-    //query = "INSERT INTO datasensor (id_alat) VALUES ('14')";
-    sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
-	std::cout << query << std::endl;
-	if (mysql_query(connect, que)){
-    //if (mysql_query(connect, query.c_str())){
+    query = "INSERT INTO todo_list (name) VALUES ('akhiyar')";
+    //sprintf (que, INSERT_QUERY, idalat, hpsp, hpc, uk, optime);
+	//std::cout << query << std::endl;
+	//if (mysql_query(connect, que)){
+    if (mysql_query(connect, query.c_str())){
         std::cout << "Success.... \n" << std::endl;
     }   
 
