@@ -16,7 +16,7 @@ int main(){
 	std::string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
-	float awal = 0.0, OpTime;
+	float awal = 0.0, OpTime, *q;
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
 	auto t1 = std::chrono::high_resolution_clock::now();
@@ -27,25 +27,24 @@ int main(){
 	// write the file headers
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
 
-	
 	while(1){
-		/*get status actuator every loop
+		//get status actuator every loop
 		p = getStatus();
 		printf("14= %d ", *(p+0));
 		printf("15= %d ", *(p+1));
 		printf("16= %d\n", *(p+2));
-		*/
-
+		
 		//function to call every t seconds
 		auto t2 = std::chrono::high_resolution_clock::now();
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 10){
 			Jalan();
 			///*test send data to server
 			temp = 5;
-			float uk = hitung(awal, temp, 14);
-			printf("uk adalah= %f\n" , uk);
+			q = hitung(awal, temp, 15);
+			printf("uk adalah= %f\n" , *(q+0));
+			printf("dur adalah= %f\n" , *(q+1));
 			//sendDataToServer(5, temp, uk, 60, 14);
-			publish(5, temp, uk, 60, 14);
+			//publish(5, temp, uk, 60, 14);
 			//*/
 			t1 = t2;		
 		}

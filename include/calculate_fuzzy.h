@@ -59,10 +59,11 @@ float Uk(float mN, float mD, float Um) ///fungsi Uk (hasil akhir)
     return Uk;
 }
 
-float hitung(float awal, float temp, int idalat)
+float * hitung(float awal, float temp, float idalat)
 {
 	int n = 2;
 	float Er[n], dEr[n], HPc[n];
+	
 	dataSetPoint = "";
 	CURL *hnd = curl_easy_init();
 	std::string URL = "http://192.168.43.98/Sigap-Server/v1/getalatuser/";
@@ -87,7 +88,10 @@ float hitung(float awal, float temp, int idalat)
 	
 	//std::cout << jsonData.toStyledString() << std::endl;
 	float HPSp = jsonData["tasks"][0]["setPoint"].asInt();
+	float OpTime = jsonData["tasks"][0]["opTime"].asInt();
 	printf("HPSp %f\n" , HPSp);
+	printf("OpTime %f\n" , OpTime);
+	
 	float f1 = 0.83;
 	float f2 = 1.00;
 	float Um = 1.00;
@@ -95,6 +99,7 @@ float hitung(float awal, float temp, int idalat)
 	
 	HPc[0] = awal;
 	HPc[1] = temp;
+	
 	for (int i=0; i<n; i++){
 		Er[i] = HPc[i]-HPSp;
 		printf("Er %f\n" , Er[i]);
@@ -117,6 +122,11 @@ float hitung(float awal, float temp, int idalat)
 	for (int i = 0; i < n; i++){
 		printf("Uk %f\n" , __Uk[i]);
 	}
-	return __Uk[1];
+	
+	static float ret[5];
+	ret[0] = __Uk[1];
+	ret[1] = OpTime;
+
+	return ret;
 }
 
