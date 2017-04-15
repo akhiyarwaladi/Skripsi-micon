@@ -3,7 +3,7 @@ static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\
 static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f\' \"http://192.168.1.116/Sigap-Server/v1/alatuser\"";
 
 void sendDataToServer(double hpsp, double hpc, double humid, double temp, double uk, double opt, double idalat){
-	char str[500];
+	char str[1000];
 	sprintf(str, URL_TOSERVER, hpsp, hpc, humid, temp, uk, opt, idalat);
 	puts(str);
 	system(str);

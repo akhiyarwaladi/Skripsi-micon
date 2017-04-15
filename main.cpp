@@ -95,11 +95,12 @@ int main(){
 				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
 				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
-				
+				/*
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";		
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+				*/
 			}
 			
 			else{
@@ -107,10 +108,12 @@ int main(){
 				awal = temp;
 				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
 				
+				/*
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+				*/
 			}
 			
 		}
