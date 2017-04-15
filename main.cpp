@@ -12,7 +12,7 @@ int main(){
 
 	// create a name for the file output
 	std::string filename = "exampleOutput.csv";
-	int handle, battery, rssi, data, temp, idalat, avail, *p;
+	int handle, battery, rssi, data, temp, idalat, avail, *p, humid, tempe;
 	std::string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
@@ -36,16 +36,18 @@ int main(){
 		
 		//function to call every t seconds
 		auto t2 = std::chrono::high_resolution_clock::now();
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 10){
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 60){
 			Jalan();
-			///*test send data to server
+			
+			/*
 			temp = 5;
-			q = hitung(awal, temp, 15);
+			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
-			//sendDataToServer(5, temp, uk, 60, 14);
-			//publish(5, temp, uk, 60, 14);
-			//*/
+			sendDataToServer(5, temp, *(q+0), 60, 14);
+			publish(5, temp, uk, 60, 14);
+			*/
+			
 			t1 = t2;		
 		}
 		
@@ -54,6 +56,8 @@ int main(){
 		if(avail >= 1){
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
+			humid = serialGetchar(handle) ;
+			tempe = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
 			battery = serialGetchar(handle) ;
 
@@ -66,14 +70,15 @@ int main(){
 			printf("Signal Strength= %d\n", rssi);
 			printf("Battery level= %d\n", battery);
 			
-			/* logic after get data from router
 			updateStatusAlat(rssi, battery, idalat);
-			float uk = hitung(awal, temp, idalat);
+			q = hitung(awal, temp, 14);
+			printf("uk adalah= %f\n" , *(q+0));
+			printf("dur adalah= %f\n" , *(q+1));
 			float HPSp = 5.0;
 			double dur1, dur2;
-			if(uk>0){
-				double tConst = uk;
-				double dur = tConst*1*60;
+			if( (*(q+0))>0 ){
+				double tConst = (*(q+0));
+				double dur = tConst*1*(*(q+1));
 				OpTime = dur;
 				printf("Durasi %f\n" , dur);
 
@@ -87,9 +92,9 @@ int main(){
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
 				
-				publish(HPSp, temp, uk, OpTime, idalat);
+				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
-				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
 				
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
@@ -98,16 +103,16 @@ int main(){
 			}
 			
 			else{
-				publish(HPSp, temp, uk, OpTime, idalat);
+				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
-				//sendDataToServer(HPSp, HPc[1], __Uk[1], OpTime, idalat);
+				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
 				
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
 				message = " Tidak berfungsi";
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			}
-			*/
+			
 		}
 		if(avail == 2){
 			idalat = serialGetchar(handle);
