@@ -28,11 +28,13 @@ int main(){
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
 
 	while(1){
+		/*
 		//get status actuator every loop
 		p = getStatus();
 		printf("14= %d ", *(p+0));
 		printf("15= %d ", *(p+1));
 		printf("16= %d\n", *(p+2));
+		*/
 		
 		//function to call every t seconds
 		auto t2 = std::chrono::high_resolution_clock::now();
