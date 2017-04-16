@@ -23,7 +23,7 @@ int main(){
 	////////////////////////// open and flush serialport ////////////////////////////////
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
-	auto t1 = std::chrono::high_resolution_clock::now();
+	
 	/////////////////////////////////////////////////////////////////////////////////////
 	
 	
@@ -35,7 +35,7 @@ int main(){
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
     /////////////////////////////////////////////////////////////////////////////////////
 	
-	
+	auto t1 = std::chrono::high_resolution_clock::now();
 	while(1){
 		/*
 		//get status actuator every loop
@@ -125,20 +125,19 @@ int main(){
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 				*/
 			}
-			
 		}
+		///////////////////////If pump finish will get this data//////////////////////////
 		if(avail == 2){
 			idalat = serialGetchar(handle);
 			data = serialGetchar(handle);
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", data);
-			//updateStatusAlat(rssi, battery, idalat);
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			
+		//////////////////////////////////////////////////////////////////////////////////
 		}
+		
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	myfile.close();
-	
 	return 0;
 }
