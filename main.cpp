@@ -72,7 +72,6 @@ int main(){
 			printf("Signal Strength= %d\n", rssi);
 			printf("Battery level= %d\n", battery);
 			
-			updateStatusAlat(rssi, battery, idalat);
 			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
@@ -97,6 +96,7 @@ int main(){
 				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
 				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
+				updateStatusAlat(rssi, battery, idalat, 1);
 				/*
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
@@ -109,7 +109,7 @@ int main(){
 				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
 				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
-				
+				updateStatusAlat(rssi, battery, idalat, 0);
 				/*
 				message = std::to_string(idalat) + message;
 				sendNotification(regId, title, message);
