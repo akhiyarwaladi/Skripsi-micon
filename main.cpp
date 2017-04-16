@@ -10,23 +10,32 @@ std::string getDate()
 }
 int main(){
 
-	// create a name for the file output
+	///////////////////////////// declare all variable ///////////////////////////////////
 	std::string filename = "exampleOutput.csv";
-	int handle, battery, rssi, data, temp, idalat, avail, *p, humid, tempe;
 	std::string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
+	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe, *p;
 	float awal = 0.0, OpTime, *q;
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	////////////////////////// open and flush serialport ////////////////////////////////
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
 	auto t1 = std::chrono::high_resolution_clock::now();
+	/////////////////////////////////////////////////////////////////////////////////////
 	
+	
+	////////////////////////////// prepare csv file /////////////////////////////////////
 	std::ofstream myfile;
 	std::remove ("example.csv");
 	myfile.open ("example.csv");
 	// write the file headers
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
-
+    /////////////////////////////////////////////////////////////////////////////////////
+	
+	
 	while(1){
 		/*
 		//get status actuator every loop
@@ -62,20 +71,19 @@ int main(){
 			tempe = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
 			battery = serialGetchar(handle) ;
+					
+			printf("Id Alat= %d\n", idalat);
+			printf("Data Received= %d\n", temp);
 
 			// write the needed data
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
 			temp = data;
 			
-			printf("Id Alat= %d\n", idalat);
-			printf("Data Received= %d\n", temp);
-			printf("Signal Strength= %d\n", rssi);
-			printf("Battery level= %d\n", battery);
-			
 			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
-			float HPSp = 5.0;
+			printf("hpsp adalah= %f\n" , *(q+2));
+			
 			double dur1, dur2;
 			if( (*(q+0))>0 ){
 				double tConst = (*(q+0));
@@ -95,7 +103,7 @@ int main(){
 				
 				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
-				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
+				sendDataToServer((*(q+2)), temp, humid, tempe, (*(q+0)), OpTime, idalat);
 				updateStatusAlat(rssi, battery, idalat, 1);
 				/*
 				message = std::to_string(idalat) + message;
@@ -108,7 +116,7 @@ int main(){
 			else{
 				//publish(HPSp, temp, uk, OpTime, idalat);
 				awal = temp;
-				sendDataToServer(HPSp, temp, humid, tempe, (*(q+0)), OpTime, idalat);
+				sendDataToServer((*(q+2)), temp, humid, tempe, (*(q+0)), OpTime, idalat);
 				updateStatusAlat(rssi, battery, idalat, 0);
 				/*
 				message = std::to_string(idalat) + message;
