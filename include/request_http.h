@@ -19,7 +19,7 @@ void sendNotification(std::string to, std::string title, std::string message){
 }
 
 void updateStatusAlat(double rssi, double battery, double idalat, double status){
-	char str[500];
+	char str[1000];
 	sprintf(str, URL_UPDATEALAT, rssi, battery, idalat, status);
 	puts(str);
 	system(str);
