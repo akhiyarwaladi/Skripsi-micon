@@ -19,3 +19,11 @@
 #include <my_global.h>			// database connection
 #include <mysql.h>				// database query
 //////////////////////////
+
+#include <event.h>
+#include <evhttp.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/queue.h>
+#include <err.h>
+#include <pthread.h>

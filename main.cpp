@@ -8,14 +8,14 @@ std::string getDate()
     str.pop_back();
     return str;
 }
-int main(){
 
+void *runmin(void *varg) //min function
+{
 	///////////////////////////// declare all variable ///////////////////////////////////////
-	std::string filename = "exampleOutput.csv";
-	std::string regId = "ewpLKlPBYKc:APA91bGpaj3nJOh69cI5EPTob2tPoH5c65Vn6N3sjL5JmwX163oL_IAt0f-BbKA_K2Sc7LrDE_Xa7Jx_Leu7Ty08EskSvVECtzJzUs78T8PXtZYMGDn8ag9ZWPm3vyCuzY4AFxFQWBXm";
+	std::string regId = "dhzyC5HLUVA:APA91bFDqRduJKR52ATJgi83zWbwLZkVM6fgCXMHviRXLggNxbcGdPOMzgrKrypaWauHbjh7hEqjcALy0qp4920eklmmrMpqxOnsxKX5WZunRp0XZ2EQar6J12g4JwgBp5hOOzo0U1WU";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
-	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe, *p;
+	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe;
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -34,11 +34,12 @@ int main(){
 	// write the file headers
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
     //////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	auto t1 = std::chrono::high_resolution_clock::now();
 	while(1){
 		/*
 		//get status actuator every loop
+		int *p;
 		p = getStatus();
 		printf("14= %d ", *(p+0));
 		printf("15= %d ", *(p+1));
@@ -144,5 +145,50 @@ int main(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	myfile.close();
+
+}
+
+void generic_handler(struct evhttp_request *req, void *arg)
+{
+    struct evbuffer *buf;
+    buf = evbuffer_new();
+    if (buf == NULL)
+        err(1, "failed to create response buffer");
+    evbuffer_add_printf(buf, "Requested: %s\n", evhttp_request_uri(req));
+    evhttp_send_reply(req, HTTP_OK, "OK", buf);
+}
+
+void *runmax(void *varg) //min function
+{
+
+
+    struct evhttp *httpd;
+    event_init();
+    httpd = evhttp_start("0.0.0.0", 8080);
+
+    /* Set a callback for requests to "/specific". */
+    /* evhttp_set_cb(httpd, "/specific", another_handler, NULL); */
+
+    /* Set a callback for all other requests. */
+    evhttp_set_gencb(httpd, generic_handler, NULL);
+
+    event_dispatch();    /* Not reached in this code as it is now. */
+    evhttp_free(httpd);
+
+}
+
+
+int main(){
+
+	
+	
+	pthread_t tid1, tid2;
+    printf("Before Threads\n");
+    pthread_create(&tid1, NULL, runmin, (void*) "haha"); 
+    pthread_create(&tid2, NULL, runmax, (void*) "haha");
+    pthread_join(tid1, NULL);
+    pthread_join(tid2, NULL);
+	
+
 	return 0;
 }

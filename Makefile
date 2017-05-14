@@ -1,7 +1,7 @@
 all: main subscribe
 
 OPTIONAL_LIBS=-lcrypto -lssl -lcares
-LIBS=-lmosquitto -lpthread -lmysqlclient -lwiringPi -lcurl -ljsoncpp -lpthread
+LIBS=-lmosquitto -lpthread -lmysqlclient -lwiringPi -lcurl -ljsoncpp -lpthread -levent
 FLAGS=-Wall -s -I /usr/include/mysql -std=c++11 -Wl,--no-as-needed  
 
 main: main.cpp
