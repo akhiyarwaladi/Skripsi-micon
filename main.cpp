@@ -148,14 +148,42 @@ void *runmin(void *varg) //min function
 
 }
 
+
+
 void generic_handler(struct evhttp_request *req, void *arg)
 {
     struct evbuffer *buf;
     buf = evbuffer_new();
     if (buf == NULL)
         err(1, "failed to create response buffer");
-    evbuffer_add_printf(buf, "Requested: %s\n", evhttp_request_uri(req));
+
+    const char *param = evhttp_request_uri(req);
+    std::string s = param;
+
+	std::stringstream ss(s);
+	std::string segment;
+	std::vector<std::string> seglist;
+
+	while(std::getline(ss, segment, '/'))
+	{
+		seglist.push_back(segment);
+	}
+	std::string param1 = seglist[1];
+	std::string param2 = seglist[2];
+	int uc1 = std::stoi( param1 );
+	int uc2 = std::stoi( param2 );
+	std::cout << "Convert" << param1 << std::endl;
+	std::cout << "Convert" << param2 << std::endl;
+
+    evbuffer_add_printf(buf, "Requested: %s\n", param);
     evhttp_send_reply(req, HTTP_OK, "OK", buf);
+
+    int handle2 = serialOpen("/dev/ttyACM0", 9600) ;
+	serialFlush (handle2);
+	serialPutchar (handle2, uc1);
+	serialPutchar (handle2, uc2);
+	serialClose (handle2) ;
+	
 }
 
 void *runmax(void *varg) //min function
@@ -164,7 +192,7 @@ void *runmax(void *varg) //min function
 
     struct evhttp *httpd;
     event_init();
-    httpd = evhttp_start("0.0.0.0", 8080);
+    httpd = evhttp_start("0.0.0.0", 5555);
 
     /* Set a callback for requests to "/specific". */
     /* evhttp_set_cb(httpd, "/specific", another_handler, NULL); */

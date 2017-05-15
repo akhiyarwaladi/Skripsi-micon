@@ -5,6 +5,8 @@
 #include <fstream>				// save output file
 #include <ctime>
 #include <string.h>
+#include <sstream>
+#include <vector>
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
