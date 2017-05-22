@@ -15,6 +15,7 @@ void *runmin(void *varg) //min function
 	std::string regId = "dhzyC5HLUVA:APA91bFDqRduJKR52ATJgi83zWbwLZkVM6fgCXMHviRXLggNxbcGdPOMzgrKrypaWauHbjh7hEqjcALy0qp4920eklmmrMpqxOnsxKX5WZunRp0XZ2EQar6J12g4JwgBp5hOOzo0U1WU";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
+	std::string idalatt;
 	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe;
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -48,17 +49,19 @@ void *runmin(void *varg) //min function
 		
 		//////////////////function to call every t seconds////////////////////////////////////
 		auto t2 = std::chrono::high_resolution_clock::now();
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 60){
-			Jalan();
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
+			//Jalan();
 			
-			/*
+			
 			temp = 5;
 			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
-			sendDataToServer(5, temp, *(q+0), 60, 14);
-			publish(5, temp, uk, 60, 14);
-			*/
+			//sendDataToServer(5, temp, *(q+0), 60, 14);
+			//publish(5, temp, uk, 60, 14);
+			DataToServer();
+			UpdateStatus();
+			
 			
 			t1 = t2;		
 		}
@@ -79,6 +82,10 @@ void *runmin(void *varg) //min function
 					
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", data);
+
+			if (idalat == 14) idalatt = "590e00f72476bf2dbca3e394";
+			else if (idalat == 15) idalatt = "590e19d1ac49692798cdab4c";
+			else if (idalat == 16) idalatt = "591fb531e576db31a4b6a504";
 
 			//////////////////////// write the needed data ///////////////////////////////
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;

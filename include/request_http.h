@@ -10,6 +10,61 @@ void sendDataToServer(double hpsp, double hpc, double humid, double temp, double
 	printf("\n");
 }
 
+void DataToServer(){
+	CURL *hnd = curl_easy_init();
+
+	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/dataset/create");
+
+	struct curl_slist *headers = NULL;
+	headers = curl_slist_append(headers, "postman-token: e0ba268f-43ca-644b-0cec-424219da7334");
+	headers = curl_slist_append(headers, "cache-control: no-cache");
+	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "content-type: application/json");
+	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"590e00f72476bf2dbca3e394\",\r\n\r\n  \"data\": {\r\n    \"humidity\": 40,\r\n    \"temperature\": 40,\r\n    \"waterlevel\": 5\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}");
+
+	CURLcode ret = curl_easy_perform(hnd);
+}
+
+void UpdateStatus(){
+
+	CURL *hnd = curl_easy_init();
+
+	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/sensornode/590e00f72476bf2dbca3e394/update");
+
+	struct curl_slist *headers = NULL;
+	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
+	headers = curl_slist_append(headers, "cache-control: no-cache");
+	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "device=590e009c2476bf2dbca3e393&status=1");
+
+	CURLcode ret = curl_easy_perform(hnd);
+}
+
+void Notification(){
+	CURL *hnd = curl_easy_init();
+
+	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://localhost:3000/api/notification/send");
+
+	struct curl_slist *headers = NULL;
+	headers = curl_slist_append(headers, "postman-token: 8d76e94d-8dce-9506-a301-f2594877953c");
+	headers = curl_slist_append(headers, "cache-control: no-cache");
+	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "title=bajingan&message=ampun");
+
+	CURLcode ret = curl_easy_perform(hnd);
+}
+
 void sendNotification(std::string to, std::string title, std::string message){
 	char str[1000];
 	sprintf(str, URL_NOTIFICATION, to.c_str(), title.c_str(), message.c_str());

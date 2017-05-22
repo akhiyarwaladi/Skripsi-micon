@@ -61,13 +61,20 @@ float Uk(float mN, float mD, float Um) ///fungsi Uk (hasil akhir)
 
 float * hitung(float awal, float temp, float idalat)
 {
+
+
 	int n = 2;
 	float Er[n], dEr[n], HPc[n];
 	
 	dataSetPoint = "";
 	CURL *hnd = curl_easy_init();
-	std::string URL = "http://192.168.43.98/Sigap-Server/v1/getalatuser/";
-	std::string id = std::to_string(idalat);
+	std::string URL = "http://192.168.43.98:3000/api/sensornodes/";
+	//std::string id = std::to_string(idalat);
+	std::string id = "";
+	if (idalat == 14) id = "590e00f72476bf2dbca3e394";
+	else if (idalat == 15) id = "590e19d1ac49692798cdab4c";
+	else if (idalat == 16) id = "591fb531e576db31a4b6a504";
+	std::cout << id << "\n";
 	URL = URL + id;
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
@@ -76,6 +83,7 @@ float * hitung(float awal, float temp, float idalat)
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "Authorization: 5d55ed73dda2730ec3e01a5f8c631966");
+	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 	curl_easy_perform(hnd);
 
@@ -87,8 +95,10 @@ float * hitung(float awal, float temp, float idalat)
 	jsonReader.parse(dataSetPoint, jsonData);
 	
 	//std::cout << jsonData.toStyledString() << std::endl;
-	float HPSp = jsonData["tasks"][0]["setPoint"].asInt();
-	float OpTime = jsonData["tasks"][0]["opTime"].asInt();
+	// float HPSp = jsonData["sensornode"][0]["setPoint"].asInt();
+	// float OpTime = jsonData["sensornode"][0]["opTime"].asInt();
+	float HPSp = jsonData["sensornode"]["setPoint"].asInt();
+	float OpTime = jsonData["sensornode"]["opTime"].asInt();
 	printf("HPSp %f\n" , HPSp);
 	printf("OpTime %f\n" , OpTime);
 	
