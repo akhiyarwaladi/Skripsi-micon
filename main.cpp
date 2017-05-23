@@ -16,6 +16,7 @@ void *runmin(void *varg) //min function
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
+	int dataReceive[5];
 	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe;
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +36,7 @@ void *runmin(void *varg) //min function
 	// write the file headers
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
     //////////////////////////////////////////////////////////////////////////////////////////
-
+	auto a1 = std::chrono::high_resolution_clock::now();
 	auto t1 = std::chrono::high_resolution_clock::now();
 	while(1){
 		/*
@@ -73,19 +74,46 @@ void *runmin(void *varg) //min function
 		
 		//////////////////////////////////////////////////////////////////////////////////////
 		if(avail >= 1){
+
+			/////////////////////////////// GET all data from serial /////////////////////////////////
+
 			idalat = serialGetchar(handle) ;
 			data = serialGetchar(handle) ;
 			humid = serialGetchar(handle) ;
 			tempe = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
 			battery = serialGetchar(handle) ;
+
+			//////////////////////////////////////////////////////////////////////////////////////////
 					
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", data);
 
-			if (idalat == 14) idalatt = "590e00f72476bf2dbca3e394";
-			else if (idalat == 15) idalatt = "590e19d1ac49692798cdab4c";
-			else if (idalat == 16) idalatt = "591fb531e576db31a4b6a504";
+			/////////////////////////////// store time data received //////////////////////////////////
+			auto a2 = std::chrono::high_resolution_clock::now();
+			if (idalat == 14){
+				idalatt = "590e00f72476bf2dbca3e394";
+				dataReceive[0] = 0;
+				dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				a1 = a2;
+			} 
+			else if(idalat == 15){
+				idalatt = "590e19d1ac49692798cdab4c";
+				dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[1] = 0;
+				dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				a1 = a2;
+			}
+			else if (idalat == 16){
+				idalatt = "591fb531e576db31a4b6a504";
+				dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[2] = 0;
+				a1 = a2;
+			} 
+
+			///////////////////////////////////////////////////////////////////////////////////////////
 
 			//////////////////////// write the needed data ///////////////////////////////
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
@@ -147,6 +175,16 @@ void *runmin(void *varg) //min function
 			printf("Data Received= %d\n", data);
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		//////////////////////////////////////////////////////////////////////////////////
+		}
+
+		if (dataReceive[0] >= 1200){
+			Notification();
+		}
+		else if (dataReceive[1] >= 1200){
+			Notification();
+		}
+		else if (dataReceive[2] >= 1200){
+			Notification();
 		}
 		
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));

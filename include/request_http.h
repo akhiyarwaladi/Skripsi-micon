@@ -25,7 +25,7 @@ void DataToServer(){
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"590e00f72476bf2dbca3e394\",\r\n\r\n  \"data\": {\r\n    \"humidity\": 40,\r\n    \"temperature\": 40,\r\n    \"waterlevel\": 5\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}");
 
-	CURLcode ret = curl_easy_perform(hnd);
+	curl_easy_perform(hnd);
 }
 
 void UpdateStatus(){
@@ -44,7 +44,8 @@ void UpdateStatus(){
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "device=590e009c2476bf2dbca3e393&status=1");
 
-	CURLcode ret = curl_easy_perform(hnd);
+	curl_easy_perform(hnd);
+
 }
 
 void Notification(){
@@ -62,7 +63,8 @@ void Notification(){
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "title=bajingan&message=ampun");
 
-	CURLcode ret = curl_easy_perform(hnd);
+	curl_easy_perform(hnd);
+
 }
 
 void sendNotification(std::string to, std::string title, std::string message){
