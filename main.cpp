@@ -53,19 +53,19 @@ void *runmin(void *varg) //min function
 		printf("16= %d\n", *(p+2));
 		*/
 		
-		//////////////////function to call every t seconds////////////////////////////////////
+		///////////////////function to call every t seconds////////////////////////////////////
 		auto t2 = std::chrono::high_resolution_clock::now();
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 10){
 			//Jalan();
-			
 			
 			temp = 5;
 			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
+			printf("hpsp adalah= %f\n" , *(q+2));
 			//sendDataToServer(5, temp, *(q+0), 60, 14);
 			//publish(5, temp, uk, 60, 14);
-			//DataToServer();
+			DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
 			//UpdateStatus();
 			//Notification();
 			
@@ -93,12 +93,12 @@ void *runmin(void *varg) //min function
 
 			/////////////////////////////// GET all data from serial /////////////////////////////////
 
-			idalat = serialGetchar(handle) ;
-			data = serialGetchar(handle) ;
-			humid = serialGetchar(handle) ;
-			tempe = serialGetchar(handle) ;
-			rssi = serialGetchar(handle) ;
-			battery = 50 ;
+			idalat 		= serialGetchar(handle) ;
+			data 		= serialGetchar(handle) ;
+			humid 		= serialGetchar(handle) ;
+			tempe 		= serialGetchar(handle) ;
+			rssi 		= serialGetchar(handle) ;
+			battery 	= 50 ;
 
 			//////////////////////////////////////////////////////////////////////////////////////////
 					
@@ -109,32 +109,34 @@ void *runmin(void *varg) //min function
 			auto a2 = std::chrono::high_resolution_clock::now();
 			if (idalat == 14){
 				idalatt = "590e00f72476bf2dbca3e394";
-				dataReceive[0] = 0;
-				dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
-				dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
-				a1 = a2;
-			} 
-			else if(idalat == 15){
-				idalatt = "590e19d1ac49692798cdab4c";
-				dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
-				dataReceive[1] = 0;
-				dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[0]	= 0;
+				dataReceive[1]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[2]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				a1 = a2;
 			}
+
+			else if(idalat == 15){
+				idalatt = "590e19d1ac49692798cdab4c";
+				dataReceive[0]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[1]	= 0;
+				dataReceive[2]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				a1 = a2;
+			}
+
 			else if (idalat == 16){
 				idalatt = "591fb531e576db31a4b6a504";
-				dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
-				dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
-				dataReceive[2] = 0;
+				dataReceive[0]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[1]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
+				dataReceive[2]	= 0;
 				a1 = a2;
 			} 
 
 			///////////////////////////////////////////////////////////////////////////////////////////
 
-			//////////////////////// write the needed data ///////////////////////////////
+			///////////////////////////////// write the needed data ///////////////////////////////////////
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
 			temp = data;
-			//////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////
 			
 			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
