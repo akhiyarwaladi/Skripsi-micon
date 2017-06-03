@@ -16,7 +16,7 @@ void *runmin(void *varg) //min function
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
-	int dataReceive[5];
+	int dataReceive[5] = {0};
 	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe;
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ void *runmin(void *varg) //min function
 		
 		//////////////////function to call every t seconds////////////////////////////////////
 		auto t2 = std::chrono::high_resolution_clock::now();
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 5){
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 10){
 			//Jalan();
 			
 			
@@ -60,18 +60,24 @@ void *runmin(void *varg) //min function
 			printf("dur adalah= %f\n" , *(q+1));
 			//sendDataToServer(5, temp, *(q+0), 60, 14);
 			//publish(5, temp, uk, 60, 14);
-			DataToServer();
-			UpdateStatus();
+			//DataToServer();
+			//UpdateStatus();
+			//Notification();
 			
 			
-			t1 = t2;		
+			t1 = t2;
+				
 		}
 		//////////////////////////////////////////////////////////////////////////////////////
 		
 		/////////////////////////// check serial data ////////////////////////////////////////
 		avail = serialDataAvail(handle);
 		printf("Data Available= %d\n", avail);
-		
+		auto a2 = std::chrono::high_resolution_clock::now();
+		dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
+		dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
+		dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
+		a1 = a2;
 		//////////////////////////////////////////////////////////////////////////////////////
 		if(avail >= 1){
 
@@ -82,7 +88,7 @@ void *runmin(void *varg) //min function
 			humid = serialGetchar(handle) ;
 			tempe = serialGetchar(handle) ;
 			rssi = serialGetchar(handle) ;
-			battery = serialGetchar(handle) ;
+			battery = 50 ;
 
 			//////////////////////////////////////////////////////////////////////////////////////////
 					
@@ -177,14 +183,17 @@ void *runmin(void *varg) //min function
 		//////////////////////////////////////////////////////////////////////////////////
 		}
 
-		if (dataReceive[0] >= 1200){
+		if (dataReceive[0] >= 60){
 			Notification();
+			dataReceive[0] = 0;
 		}
-		else if (dataReceive[1] >= 1200){
+		else if (dataReceive[1] >= 60){
 			Notification();
+			dataReceive[1] = 0;
 		}
-		else if (dataReceive[2] >= 1200){
+		else if (dataReceive[2] >= 60){
 			Notification();
+			dataReceive[2] = 0;
 		}
 		
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -197,6 +206,7 @@ void *runmin(void *varg) //min function
 
 void generic_handler(struct evhttp_request *req, void *arg)
 {
+	// this function to send command to actuator 
     struct evbuffer *buf;
     buf = evbuffer_new();
     if (buf == NULL)
@@ -213,6 +223,7 @@ void generic_handler(struct evhttp_request *req, void *arg)
 	{
 		seglist.push_back(segment);
 	}
+
 	std::string param1 = seglist[1];
 	std::string param2 = seglist[2];
 	int uc1 = std::stoi( param1 );
@@ -258,7 +269,7 @@ int main(){
 	pthread_t tid1, tid2;
     printf("Before Threads\n");
     pthread_create(&tid1, NULL, runmin, (void*) "haha"); 
-    pthread_create(&tid2, NULL, runmax, (void*) "haha");
+    pthread_create(&tid2, NULL, runmax, (void*) "hihi");
     pthread_join(tid1, NULL);
     pthread_join(tid2, NULL);
 	
