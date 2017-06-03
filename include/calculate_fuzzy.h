@@ -68,7 +68,7 @@ float * hitung(float awal, float temp, float idalat)
 	
 	dataSetPoint = "";
 	CURL *hnd = curl_easy_init();
-	std::string URL = "http://192.168.43.98:3000/api/sensornodes/";
+	std::string URL = "http://192.168.0.109:3000/api/sensornodes/";
 	//std::string id = std::to_string(idalat);
 	std::string id = "";
 	if (idalat == 14) id = "590e00f72476bf2dbca3e394";

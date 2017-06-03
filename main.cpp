@@ -1,4 +1,5 @@
 #include "include/call_header.h"
+
 std::string getDate()
 {
     std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
@@ -11,6 +12,11 @@ std::string getDate()
 
 void *runmin(void *varg) //min function
 {
+	//////////////// initiate time counter //////////////
+	auto a1 = std::chrono::high_resolution_clock::now();
+	auto t1 = std::chrono::high_resolution_clock::now();
+	/////////////////////////////////////////////////////
+
 	///////////////////////////// declare all variable ///////////////////////////////////////
 	std::string regId = "dhzyC5HLUVA:APA91bFDqRduJKR52ATJgi83zWbwLZkVM6fgCXMHviRXLggNxbcGdPOMzgrKrypaWauHbjh7hEqjcALy0qp4920eklmmrMpqxOnsxKX5WZunRp0XZ2EQar6J12g4JwgBp5hOOzo0U1WU";
 	std::string title = "Periksa Alat";
@@ -36,8 +42,7 @@ void *runmin(void *varg) //min function
 	// write the file headers
     myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
     //////////////////////////////////////////////////////////////////////////////////////////
-	auto a1 = std::chrono::high_resolution_clock::now();
-	auto t1 = std::chrono::high_resolution_clock::now();
+
 	while(1){
 		/*
 		//get status actuator every loop
@@ -73,11 +78,16 @@ void *runmin(void *varg) //min function
 		/////////////////////////// check serial data ////////////////////////////////////////
 		avail = serialDataAvail(handle);
 		printf("Data Available= %d\n", avail);
-		auto a2 = std::chrono::high_resolution_clock::now();
-		dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
-		dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
-		dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
-		a1 = a2;
+
+		if(avail <= 0){
+			auto a2 = std::chrono::high_resolution_clock::now();
+			dataReceive[0] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
+			dataReceive[1] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
+			dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
+			a1 = a2;	
+		}
+
+
 		//////////////////////////////////////////////////////////////////////////////////////
 		if(avail >= 1){
 

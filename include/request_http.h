@@ -52,7 +52,7 @@ void Notification(){
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/notification/send");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.0.109:3000/api/notification/send");
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: 8d76e94d-8dce-9506-a301-f2594877953c");
