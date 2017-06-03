@@ -52,8 +52,8 @@ void UpdateStatus(){
 	curl_easy_perform(hnd);
 
 }
-
-void Notification(){
+static const char *payToNotif = "title=%s&message=%s";
+void Notification(std::string title, std::string message){
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
@@ -66,7 +66,11 @@ void Notification(){
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "title=bajingan&message=ampun");
+	char str[1000];
+	sprintf(str, payToNotif, title.c_str(), message.c_str());
+	puts(str);
+
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
 
 	curl_easy_perform(hnd);
 

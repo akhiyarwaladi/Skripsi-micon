@@ -67,9 +67,7 @@ void *runmin(void *varg) //min function
 			//publish(5, temp, uk, 60, 14);
 			DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
 			//UpdateStatus();
-			//Notification();
-			
-			
+	
 			t1 = t2;
 				
 		}
@@ -196,16 +194,26 @@ void *runmin(void *varg) //min function
 		}
 
 		if (dataReceive[0] >= 60){
-			Notification();
+
+			message = "590e00f72476bf2dbca3e394" + message;
+			Notification(title, message);
+			message = " Tidak berfungsi";
 			dataReceive[0] = 0;
+
 		}
 		else if (dataReceive[1] >= 60){
-			Notification();
+			message = "590e19d1ac49692798cdab4c" + message;
+			Notification(title, message);
+			message = " Tidak berfungsi";
 			dataReceive[1] = 0;
+
 		}
 		else if (dataReceive[2] >= 60){
-			Notification();
+			message = "591fb531e576db31a4b6a504" + message;
+			Notification(title, message);
+			message = " Tidak berfungsi";
 			dataReceive[2] = 0;
+			
 		}
 		
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
