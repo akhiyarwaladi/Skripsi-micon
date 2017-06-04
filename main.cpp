@@ -158,13 +158,13 @@ void *runmin(void *varg) //min function
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
 				
-
+				DataToServer(idalatt, humid, tempe, temp, *(q+2), *(q+1), *(q+0));
 				awal = temp;
 				UpdateStatus(idalatt, 1);
 			}
 			
 			else{
-
+				DataToServer(idalatt, humid, tempe, temp, *(q+2), OpTime, *(q+0));
 				awal = temp;
 				UpdateStatus(idalatt, 0);
 
@@ -174,9 +174,22 @@ void *runmin(void *varg) //min function
 		if(avail == 2){
 			idalat = serialGetchar(handle);
 			data = serialGetchar(handle);
+			if (idalat == 14){
+				idalatt = "590e00f72476bf2dbca3e394";
+			}
+
+			else if(idalat == 15){
+				idalatt = "590e19d1ac49692798cdab4c";
+			}
+
+			else if (idalat == 16){
+				idalatt = "591fb531e576db31a4b6a504";
+			} 
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", data);
+			UpdateStatus(idalatt, 0);
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
 		//////////////////////////////////////////////////////////////////////////////////
 		}
 
