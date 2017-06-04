@@ -66,7 +66,7 @@ void *runmin(void *varg) //min function
 			//sendDataToServer(5, temp, *(q+0), 60, 14);
 			//publish(5, temp, uk, 60, 14);
 			DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
-			//UpdateStatus();
+			UpdateStatus("590e00f72476bf2dbca3e394", 1);
 	
 			t1 = t2;
 				
@@ -213,7 +213,7 @@ void *runmin(void *varg) //min function
 			Notification(title, message);
 			message = " Tidak berfungsi";
 			dataReceive[2] = 0;
-			
+
 		}
 		
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));

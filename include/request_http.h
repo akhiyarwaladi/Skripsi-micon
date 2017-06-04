@@ -10,11 +10,11 @@ void sendDataToServer(double hpsp, double hpc, double humid, double temp, double
 	printf("\n");
 }
 static const char *payToServer = "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
-void DataToServer(std::string node, double humid, double temp, double waterlevel, double setPoint, double opTime, double uk){
+void DataToServer(std::string idnode, double humid, double temp, double waterlevel, double setPoint, double opTime, double uk){
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.0.109:3000/api/dataset/create");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/dataset/create");
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: e0ba268f-43ca-644b-0cec-424219da7334");
@@ -24,7 +24,7 @@ void DataToServer(std::string node, double humid, double temp, double waterlevel
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
 	char str[1000];
-	sprintf(str, payToServer, node.c_str(), setPoint, uk, opTime, humid, temp, waterlevel);
+	sprintf(str, payToServer, idnode.c_str(), setPoint, uk, opTime, humid, temp, waterlevel);
 	puts(str);
 
 	//curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"590e00f72476bf2dbca3e394\",\r\n\r\n  \"data\": {\r\n    \"humidity\": 40,\r\n    \"temperature\": 40,\r\n    \"waterlevel\": 5\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}");
@@ -32,13 +32,18 @@ void DataToServer(std::string node, double humid, double temp, double waterlevel
 
 	curl_easy_perform(hnd);
 }
+static const char *payUpdate = "device=590e009c2476bf2dbca3e393&status=%f";
+void UpdateStatus(std::string idnode, double status){
+	static const char *url = "http://192.168.43.98:3000/api/sensornode/%s/update";
+	char ur[1000];
+	sprintf(ur, url, idnode.c_str());
+	puts(ur);
 
-void UpdateStatus(){
 
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/sensornode/590e00f72476bf2dbca3e394/update");
+	curl_easy_setopt(hnd, CURLOPT_URL, url);
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
@@ -47,7 +52,11 @@ void UpdateStatus(){
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "device=590e009c2476bf2dbca3e393&status=1");
+	char str[1000];
+	sprintf(str, payUpdate, idnode.c_str(), status);
+	puts(str);
+
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
 
 	curl_easy_perform(hnd);
 
@@ -57,7 +66,7 @@ void Notification(std::string title, std::string message){
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.0.109:3000/api/notification/send");
+	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/notification/send");
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: 8d76e94d-8dce-9506-a301-f2594877953c");
