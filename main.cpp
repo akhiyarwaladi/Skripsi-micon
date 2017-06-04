@@ -65,8 +65,8 @@ void *runmin(void *varg) //min function
 			printf("hpsp adalah= %f\n" , *(q+2));
 			//sendDataToServer(5, temp, *(q+0), 60, 14);
 			//publish(5, temp, uk, 60, 14);
-			DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
-			UpdateStatus("590e00f72476bf2dbca3e394", 1);
+			//DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
+			//UpdateStatus("590e00f72476bf2dbca3e394", 1);
 	
 			t1 = t2;
 				
