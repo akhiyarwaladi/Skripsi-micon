@@ -37,6 +37,7 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 static const char *payUpdate = "device=590e009c2476bf2dbca3e393&status=%f";
 void UpdateStatus(std::string idnode, double status){
 	static const char *url = "http://192.168.43.98:3000/api/sensornode/%s/update";
+	
 	char ur[1000];
 	sprintf(ur, url, idnode.c_str());
 	puts(ur);
@@ -55,7 +56,7 @@ void UpdateStatus(std::string idnode, double status){
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
 	char str[1000];
-	sprintf(str, payUpdate, idnode.c_str(), status);
+	sprintf(str, payUpdate, status);
 	puts(str);
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
