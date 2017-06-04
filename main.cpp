@@ -158,29 +158,16 @@ void *runmin(void *varg) //min function
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
 				
-				//publish(HPSp, temp, uk, OpTime, idalat);
+
 				awal = temp;
-				sendDataToServer((*(q+2)), temp, humid, tempe, (*(q+0)), OpTime, idalat);
-				updateStatusAlat(rssi, battery, idalat, 1);
-				/*
-				message = std::to_string(idalat) + message;
-				sendNotification(regId, title, message);
-				message = " Tidak berfungsi";		
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-				*/
+				UpdateStatus(idalatt, 1);
 			}
 			
 			else{
-				//publish(HPSp, temp, uk, OpTime, idalat);
+
 				awal = temp;
-				sendDataToServer((*(q+2)), temp, humid, tempe, (*(q+0)), OpTime, idalat);
-				updateStatusAlat(rssi, battery, idalat, 0);
-				/*
-				message = std::to_string(idalat) + message;
-				sendNotification(regId, title, message);
-				message = " Tidak berfungsi";
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-				*/
+				UpdateStatus(idalatt, 0);
+
 			}
 		}
 		///////////////////////If pump finish will get this data//////////////////////////

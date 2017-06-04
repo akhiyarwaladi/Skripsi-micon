@@ -9,6 +9,7 @@ void sendDataToServer(double hpsp, double hpc, double humid, double temp, double
 	system(str);
 	printf("\n");
 }
+
 static const char *payToServer = "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
 void DataToServer(std::string idnode, double humid, double temp, double waterlevel, double setPoint, double opTime, double uk){
 	CURL *hnd = curl_easy_init();
@@ -32,6 +33,7 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 
 	curl_easy_perform(hnd);
 }
+
 static const char *payUpdate = "device=590e009c2476bf2dbca3e393&status=%f";
 void UpdateStatus(std::string idnode, double status){
 	static const char *url = "http://192.168.43.98:3000/api/sensornode/%s/update";
@@ -61,6 +63,7 @@ void UpdateStatus(std::string idnode, double status){
 	curl_easy_perform(hnd);
 
 }
+
 static const char *payToNotif = "title=%s&message=%s";
 void Notification(std::string title, std::string message){
 	CURL *hnd = curl_easy_init();
