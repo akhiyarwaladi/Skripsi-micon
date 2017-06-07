@@ -258,6 +258,21 @@ void generic_handler(struct evhttp_request *req, void *arg)
 	serialFlush (handle2);
 	serialPutchar (handle2, uc1);
 	serialPutchar (handle2, uc2);
+
+	std::string idalatt;
+	if (uc1 == 14){
+		idalatt = "590e00f72476bf2dbca3e394";
+	}
+
+	else if(uc1 == 15){
+		idalatt = "590e19d1ac49692798cdab4c";
+	}
+
+	else if (uc1 == 16){
+		idalatt = "591fb531e576db31a4b6a504";
+	} 
+
+	UpdateStatus(idalatt, uc2);
 	serialClose (handle2) ;
 	
 }

@@ -1,7 +1,7 @@
 static const char *URL_TOSERVER= "curl -X POST -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: c6054f6b-8f38-6630-f6da-1101ef4d3e59\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'hpsp=%f&hpc=%f&humid=%f&temp=%f&uk=%f&optime=%f&idalat=%f\' \"http://192.168.43.98/Sigap-Server/v1/data_sensor\"";
 static const char *URL_NOTIFICATION= "curl -X POST -H \"Cache-Control: no-cache\" -H \"Postman-Token: 26d74e27-95c1-ec91-5c25-d7e14db55344\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'to=%s&title=%s&message=%s\' \"http://192.168.43.98/Sigap-Server/v1/sendsingle\"";
 static const char *URL_UPDATEALAT= "curl -X PUT -H \"Authorization: 5d55ed73dda2730ec3e01a5f8c631966\" -H \"Cache-Control: no-cache\" -H \"Postman-Token: 0f4cf5df-09ec-d9e4-2642-60ca3c950289\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \'rssi=%f&battery=%f&idalat=%f&status=%f\' \"http://192.168.43.98/Sigap-Server/v1/alatuser\"";
-
+static const char *BASE_URL = "http://192.168.0.113:3000/api";
 void sendDataToServer(double hpsp, double hpc, double humid, double temp, double uk, double opt, double idalat){
 	char str[1000];
 	sprintf(str, URL_TOSERVER, hpsp, hpc, humid, temp, uk, opt, idalat);
@@ -15,7 +15,7 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/dataset/create");
+	curl_easy_setopt(hnd, CURLOPT_URL, std::string(std::string(BASE_URL)+"/dataset/create").c_str());
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: e0ba268f-43ca-644b-0cec-424219da7334");
@@ -36,7 +36,7 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 
 static const char *payUpdate = "device=590e009c2476bf2dbca3e393&status=%f";
 void UpdateStatus(std::string idnode, double status){
-	static const char *url = "http://192.168.43.98:3000/api/sensornode/%s/update";
+	static const char *url = std::string(std::string(BASE_URL) + "/sensornode/%s/update").c_str();
 	
 	char ur[1000];
 	sprintf(ur, url, idnode.c_str());
@@ -70,7 +70,7 @@ void Notification(std::string title, std::string message){
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-	curl_easy_setopt(hnd, CURLOPT_URL, "http://192.168.43.98:3000/api/notification/send");
+	curl_easy_setopt(hnd, CURLOPT_URL, std::string(std::string(BASE_URL) + "/notification/send").c_str());
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: 8d76e94d-8dce-9506-a301-f2594877953c");
