@@ -72,9 +72,7 @@ float * hitung(float awal, float temp, float idalat)
 	std::string URL = std::string(BASE_URL)+"/sensornodes/";
 	//std::string id = std::to_string(idalat);
 	std::string id = "";
-	if (idalat == 14) id = "590e00f72476bf2dbca3e394";
-	else if (idalat == 15) id = "590e19d1ac49692798cdab4c";
-	else if (idalat == 16) id = "591fb531e576db31a4b6a504";
+	id = convertid(idalat);
 	std::cout << id << "\n";
 	URL = URL + id;
 

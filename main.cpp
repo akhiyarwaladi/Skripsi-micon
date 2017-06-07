@@ -174,17 +174,7 @@ void *runmin(void *varg) //min function
 		if(avail == 2){
 			idalat = serialGetchar(handle);
 			data = serialGetchar(handle);
-			if (idalat == 14){
-				idalatt = "590e00f72476bf2dbca3e394";
-			}
-
-			else if(idalat == 15){
-				idalatt = "590e19d1ac49692798cdab4c";
-			}
-
-			else if (idalat == 16){
-				idalatt = "591fb531e576db31a4b6a504";
-			} 
+			idalatt = convertid(idalat);
 			printf("Id Alat= %d\n", idalat);
 			printf("Data Received= %d\n", data);
 			UpdateStatus(idalatt, 0);
@@ -219,6 +209,8 @@ void *runmin(void *varg) //min function
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	myfile.close();
+	void *retmin = NULL;
+	return retmin;
 
 }
 
@@ -260,17 +252,7 @@ void generic_handler(struct evhttp_request *req, void *arg)
 	serialPutchar (handle2, uc2);
 
 	std::string idalatt;
-	if (uc1 == 14){
-		idalatt = "590e00f72476bf2dbca3e394";
-	}
-
-	else if(uc1 == 15){
-		idalatt = "590e19d1ac49692798cdab4c";
-	}
-
-	else if (uc1 == 16){
-		idalatt = "591fb531e576db31a4b6a504";
-	} 
+	idalatt = convertid(uc1);
 
 	UpdateStatus(idalatt, uc2);
 	serialClose (handle2) ;
@@ -279,7 +261,6 @@ void generic_handler(struct evhttp_request *req, void *arg)
 
 void *runmax(void *varg) //min function
 {
-
 
     struct evhttp *httpd;
     event_init();
@@ -294,6 +275,8 @@ void *runmax(void *varg) //min function
     event_dispatch();    /* Not reached in this code as it is now. */
     evhttp_free(httpd);
 
+	void *retmin = NULL;
+	return retmin;
 }
 
 

@@ -62,7 +62,6 @@ void UpdateStatus(std::string idnode, double status){
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
 
 	curl_easy_perform(hnd);
-
 }
 
 static const char *payToNotif = "title=%s&message=%s";
@@ -86,7 +85,6 @@ void Notification(std::string title, std::string message){
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
 
 	curl_easy_perform(hnd);
-
 }
 
 void sendNotification(std::string to, std::string title, std::string message){
