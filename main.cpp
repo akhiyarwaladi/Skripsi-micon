@@ -22,6 +22,7 @@ void *runmin(void *varg) //min function
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
+	std::string idalattt;
 	int dataReceive[5] = {0};
 	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe;
 	float awal = 0.0, OpTime, *q;
@@ -253,9 +254,9 @@ void generic_handler(struct evhttp_request *req, void *arg)
 	serialPutchar (handle2, uc2);
 
 	std::string idalatt;
-	idalatt = convertid(uc1);
+	idalattt = convertid(uc1);
 	std::cout << "idalatt" << idalatt << std::endl;
-	UpdateStatus(idalatt, uc2);
+	UpdateStatus(idalattt, uc2);
 	serialClose (handle2) ;
 	
 }
