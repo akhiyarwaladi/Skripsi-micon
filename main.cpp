@@ -253,7 +253,7 @@ void generic_handler(struct evhttp_request *req, void *arg)
 	serialPutchar (handle2, uc1);
 	serialPutchar (handle2, uc2);
 
-	std::string idalatt;
+	std::string idalattt;
 	idalattt = convertid(uc1);
 	std::cout << "idalatt" << idalatt << std::endl;
 	UpdateStatus(idalattt, uc2);
