@@ -135,7 +135,7 @@ void *runmin(void *varg) //min function
 
 			///////////////////////////////// write the needed data ///////////////////////////////////////
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
-			temp = data - 13;
+			temp = 11 - data;
 			///////////////////////////////////////////////////////////////////////////////////////////////
 			
 			q = hitung(awal, temp, 14);
@@ -185,7 +185,7 @@ void *runmin(void *varg) //min function
 		//////////////////////////////////////////////////////////////////////////////////
 		}
 
-		if (dataReceive[0] >= 60){
+		if (dataReceive[0] >= 80){
 
 			message = "590e00f72476bf2dbca3e394" + message;
 			Notification(title, message);
