@@ -176,10 +176,11 @@ void *runmin(void *varg) //min function
 		if(avail == 2){
 			idalat = serialGetchar(handle);
 			data = serialGetchar(handle);
-			idalatt = convertid(idalat);
-			printf("Id Alat= %d\n", idalat);
+			std::string ida;
+			ida = convertid(idalat);
+			printf("Id Alat= %d\n", ida);
 			printf("Data Received= %d\n", data);
-			UpdateStatus(idalatt, 0);
+			UpdateStatus(ida, 0);
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 		//////////////////////////////////////////////////////////////////////////////////
