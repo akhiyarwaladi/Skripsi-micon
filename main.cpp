@@ -122,7 +122,7 @@ void *runmin(void *varg) //min function
 			}
 
 			else if (idalat == 16){
-				idalatt = "591fb531e576db31a4b6a504";
+				idalatt = "5930d241e733191d9836fb57";
 				dataReceive[0]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				dataReceive[1]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				dataReceive[2]	= 0;
@@ -133,7 +133,7 @@ void *runmin(void *varg) //min function
 
 			///////////////////////////////// write the needed data ///////////////////////////////////////
 			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
-			temp = data;
+			temp = data - 13;
 			///////////////////////////////////////////////////////////////////////////////////////////////
 			
 			q = hitung(awal, temp, 14);
