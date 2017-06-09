@@ -178,7 +178,7 @@ void *runmin(void *varg) //min function
 			data = serialGetchar(handle);
 			std::string ida;
 			ida = convertid(idalat);
-			printf("Id= %d\n", ida);
+			printf("Id= %s\n", ida);
 			printf("Data Received= %d\n", data);
 			UpdateStatus(ida, 0);
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
