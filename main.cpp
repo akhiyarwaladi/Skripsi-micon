@@ -254,7 +254,7 @@ void generic_handler(struct evhttp_request *req, void *arg)
 
 	std::string idalatt;
 	idalatt = convertid(uc1);
-
+	std::cout << "idalatt" << idalatt << std::endl;
 	UpdateStatus(idalatt, uc2);
 	serialClose (handle2) ;
 	
