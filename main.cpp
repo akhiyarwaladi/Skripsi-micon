@@ -182,8 +182,8 @@ void *runmin(void *varg) //min function
 			std::cout << "idalattt" << ida << std::endl;
 			printf("Data Received= %d\n", data);
 			
-			UpdateStatus(ida, data);
-			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			UpdateStatus(ida, 0);
+
 
 		//////////////////////////////////////////////////////////////////////////////////
 		}
@@ -204,7 +204,7 @@ void *runmin(void *varg) //min function
 
 		}
 		else if (dataReceive[2] >= 60){
-			message = "591fb531e576db31a4b6a504" + message;
+			message = "5930d241e733191d9836fb57" + message;
 			Notification(title, message);
 			message = " Tidak berfungsi";
 			dataReceive[2] = 0;
