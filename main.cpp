@@ -23,18 +23,15 @@ void *runmin(void *varg) //min function
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
 	std::string idalattt;
-	int dataReceive[5] = {0};
-	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe;
+	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe, dataReceive[5] = {0};
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	////////////////////////// open and flush serialport /////////////////////////////////////
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	////////////////////////////// prepare csv file //////////////////////////////////////////
 	std::ofstream myfile;
@@ -45,6 +42,7 @@ void *runmin(void *varg) //min function
     //////////////////////////////////////////////////////////////////////////////////////////
 
 	while(1){
+
 		/*
 		//get status actuator every loop
 		int *p;
@@ -56,7 +54,7 @@ void *runmin(void *varg) //min function
 		
 		///////////////////function to call every t seconds////////////////////////////////////
 		auto t2 = std::chrono::high_resolution_clock::now();
-		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 10){
+		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 30){
 			//Jalan();
 			/*
 			temp = 5;
@@ -69,6 +67,7 @@ void *runmin(void *varg) //min function
 			//DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
 			//UpdateStatus("590e00f72476bf2dbca3e394", 1);
 			*/
+			std::cout << "sudah 30 detik" << std::endl;
 			t1 = t2;
 
 				
@@ -86,7 +85,6 @@ void *runmin(void *varg) //min function
 			dataReceive[2] += std::chrono::duration_cast<std::chrono::seconds>(a2-a1).count();
 			a1 = a2;	
 		}
-
 
 		//////////////////////////////////////////////////////////////////////////////////////
 		if(avail == 5){
@@ -138,6 +136,7 @@ void *runmin(void *varg) //min function
 			temp = 11 - data;
 			///////////////////////////////////////////////////////////////////////////////////////////////
 			
+			/////////////////////////////// start fuzzy calculation ///////////////////////////////////////
 			q = hitung(awal, temp, 14);
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
@@ -171,24 +170,26 @@ void *runmin(void *varg) //min function
 				UpdateStatus(idalatt, 0);
 
 			}
+			////////////////////////////// end fuzzy calculation ////////////////////////////////////
 		}
 		///////////////////////If pump finish will get this data//////////////////////////
+
 		if(avail == 2){
 			idalat = serialGetchar(handle);
 			data = serialGetchar(handle);
+
 			std::string ida;
 			ida = convertid(idalat);
-			printf("id= %d\n", idalat);
+			//printf("id= %d\n", idalat);
 			std::cout << "idalattt" << ida << std::endl;
 			printf("Data Received= %d\n", data);
 			
 			UpdateStatus(ida, 0);
 
-
 		//////////////////////////////////////////////////////////////////////////////////
 		}
-
-		if (dataReceive[0] >= 80){
+		////////////////////// if data not received in time ///////////////////////////////
+		if (dataReceive[0] >= 200){
 
 			message = "590e00f72476bf2dbca3e394" + message;
 			Notification(title, message);
@@ -196,30 +197,31 @@ void *runmin(void *varg) //min function
 			dataReceive[0] = 0;
 
 		}
-		else if (dataReceive[1] >= 60){
+		else if (dataReceive[1] >= 200){
+
 			message = "590e19d1ac49692798cdab4c" + message;
 			Notification(title, message);
 			message = " Tidak berfungsi";
 			dataReceive[1] = 0;
 
 		}
-		else if (dataReceive[2] >= 60){
+		else if (dataReceive[2] >= 200){
+
 			message = "5930d241e733191d9836fb57" + message;
 			Notification(title, message);
 			message = " Tidak berfungsi";
 			dataReceive[2] = 0;
 
 		}
-		
+		//////////////////////// end send notification to mobile ////////////////////////////
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
+
 	myfile.close();
 	void *retmin = NULL;
 	return retmin;
 
 }
-
-
 
 void generic_handler(struct evhttp_request *req, void *arg)
 {
@@ -287,15 +289,14 @@ void *runmax(void *varg) //min function
 
 int main(){
 
-	
-	
+	std::ios::sync_with_stdio(false);
 	pthread_t tid1, tid2;
-    printf("Before Threads\n");
+    printf("Start Threads\n");
     pthread_create(&tid1, NULL, runmin, (void*) "haha"); 
     pthread_create(&tid2, NULL, runmax, (void*) "hihi");
     pthread_join(tid1, NULL);
     pthread_join(tid2, NULL);
-	
-
+	printf("Finish Threads\n");
 	return 0;
+	
 }
