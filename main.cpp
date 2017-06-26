@@ -170,7 +170,7 @@ void *runmin(void *varg) //min function
 				UpdateStatus(idalatt, 0);
 
 			}
-			////////////////////////////// end fuzzy calculation ////////////////////////////////////
+			////////////////////////////// end fuzzy calculation ///////////////////////////////////////////
 		}
 		///////////////////////If pump finish will get this data//////////////////////////
 
@@ -298,5 +298,5 @@ int main(){
     pthread_join(tid2, NULL);
 	printf("Finish Threads\n");
 	return 0;
-	
+
 }
