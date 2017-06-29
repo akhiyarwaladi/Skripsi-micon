@@ -189,26 +189,29 @@ void *runmin(void *varg) //min function
 		//////////////////////////////////////////////////////////////////////////////////
 		}
 		////////////////////// if data not received in time ///////////////////////////////
-		if (dataReceive[0] >= 200){
+		if (dataReceive[0] >= 60){
 
 			message = "590e00f72476bf2dbca3e394" + message;
 			Notification(title, message);
+			UpdateNotif("590e00f72476bf2dbca3e394", 1);
 			message = " Tidak berfungsi";
 			dataReceive[0] = 0;
 
 		}
-		else if (dataReceive[1] >= 200){
+		else if (dataReceive[1] >= 60){
 
 			message = "590e19d1ac49692798cdab4c" + message;
 			Notification(title, message);
+			UpdateNotif("590e19d1ac49692798cdab4c", 1);
 			message = " Tidak berfungsi";
 			dataReceive[1] = 0;
 
 		}
-		else if (dataReceive[2] >= 200){
+		else if (dataReceive[2] >= 60){
 
 			message = "5930d241e733191d9836fb57" + message;
 			Notification(title, message);
+			UpdateNotif("5930d241e733191d9836fb57", 1);
 			message = " Tidak berfungsi";
 			dataReceive[2] = 0;
 
