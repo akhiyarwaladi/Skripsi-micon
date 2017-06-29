@@ -162,12 +162,14 @@ void *runmin(void *varg) //min function
 				DataToServer(idalatt, humid, tempe, temp, *(q+2), *(q+1), *(q+0));
 				awal = temp;
 				UpdateStatus(idalatt, 1);
+				UpdateNotif(idalatt, 0);
 			}
 			
 			else{
 				DataToServer(idalatt, humid, tempe, temp, *(q+2), OpTime, *(q+0));
 				awal = temp;
 				UpdateStatus(idalatt, 0);
+				UpdateNotif(idalatt, 0);
 
 			}
 			////////////////////////////// end fuzzy calculation ///////////////////////////////////////////
