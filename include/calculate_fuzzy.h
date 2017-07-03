@@ -98,6 +98,7 @@ float * hitung(float awal, float temp, float idalat)
 	// float OpTime = jsonData["sensornode"][0]["opTime"].asInt();
 	float HPSp = jsonData["sensornode"]["setPoint"].asInt();
 	float OpTime = jsonData["sensornode"]["opTime"].asInt();
+	float IntvData = jsonData["sensornode"]["intvData"].asInt();
 	printf("HPSp %f\n" , HPSp);
 	printf("OpTime %f\n" , OpTime);
 	
@@ -136,6 +137,7 @@ float * hitung(float awal, float temp, float idalat)
 	ret[0] = __Uk[1];
 	ret[1] = OpTime;
 	ret[2] = HPSp;
+	ret[3] = IntvData;
 
 	return ret;
 }

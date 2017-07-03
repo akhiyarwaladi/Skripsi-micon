@@ -141,6 +141,7 @@ void *runmin(void *varg) //min function
 			printf("uk adalah= %f\n" , *(q+0));
 			printf("dur adalah= %f\n" , *(q+1));
 			printf("hpsp adalah= %f\n" , *(q+2));
+			printf("intvdata adalah= %f\n", *(q+3));
 			
 			double dur1, dur2;
 			if( (*(q+0)) > 0 ){
@@ -158,6 +159,7 @@ void *runmin(void *varg) //min function
 				serialPutchar (handle, idalat);
 				serialPutchar (handle, dur1);
 				serialPutchar (handle, dur2);
+				serialPutchar (handle, *(q+3));
 				
 				DataToServer(idalatt, humid, tempe, temp, *(q+2), *(q+1), *(q+0));
 				awal = temp;
