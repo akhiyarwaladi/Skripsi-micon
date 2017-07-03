@@ -44,6 +44,7 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 	headers = curl_slist_append(headers, "postman-token: e0ba268f-43ca-644b-0cec-424219da7334");
 	headers = curl_slist_append(headers, "cache-control: no-cache");
 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
 	headers = curl_slist_append(headers, "content-type: application/json");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
@@ -74,6 +75,7 @@ void UpdateStatus(std::string idnode, double status){
 	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
 	headers = curl_slist_append(headers, "cache-control: no-cache");
 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
@@ -101,6 +103,7 @@ void UpdateNotif(std::string idnode, double status){
 	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
 	headers = curl_slist_append(headers, "cache-control: no-cache");
 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
@@ -123,6 +126,7 @@ void Notification(std::string title, std::string message){
 	headers = curl_slist_append(headers, "postman-token: 8d76e94d-8dce-9506-a301-f2594877953c");
 	headers = curl_slist_append(headers, "cache-control: no-cache");
 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 

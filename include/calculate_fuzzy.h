@@ -81,7 +81,7 @@ float * hitung(float awal, float temp, float idalat)
 	curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallbackSetPoint);
 
 	struct curl_slist *headers = NULL;
-	headers = curl_slist_append(headers, "Authorization: 5d55ed73dda2730ec3e01a5f8c631966");
+	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 	curl_easy_perform(hnd);
