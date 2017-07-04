@@ -67,6 +67,11 @@ void *runmin(void *varg) //min function
 			//DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
 			//UpdateStatus("590e00f72476bf2dbca3e394", 1);
 			*/
+			q = hitung(1, 5, 14);
+			printf("uk adalah= %f\n" , *(q+0));
+			printf("dur adalah= %f\n" , *(q+1));
+			printf("hpsp adalah= %f\n" , *(q+2));
+			printf("intvdata adalah= %f\n", *(q+3));
 			std::cout << "sudah 30 detik" << std::endl;
 			t1 = t2;
 
