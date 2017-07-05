@@ -18,7 +18,6 @@ void *runmin(void *varg) //min function
 	/////////////////////////////////////////////////////
 
 	///////////////////////////// declare all variable ///////////////////////////////////////
-	std::string regId = "dhzyC5HLUVA:APA91bFDqRduJKR52ATJgi83zWbwLZkVM6fgCXMHviRXLggNxbcGdPOMzgrKrypaWauHbjh7hEqjcALy0qp4920eklmmrMpqxOnsxKX5WZunRp0XZ2EQar6J12g4JwgBp5hOOzo0U1WU";
 	std::string title = "Periksa Alat";
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
