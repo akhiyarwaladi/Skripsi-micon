@@ -66,11 +66,11 @@ void *runmin(void *varg) //min function
 			//DataToServer("590e00f72476bf2dbca3e394", 80, 90, 5, *(q+2), *(q+1), *(q+0));
 			//UpdateStatus("590e00f72476bf2dbca3e394", 1);
 			*/
-			q = hitung(1, 5, 14);
-			printf("uk adalah= %f\n" , *(q+0));
-			printf("dur adalah= %f\n" , *(q+1));
-			printf("hpsp adalah= %f\n" , *(q+2));
-			printf("intvdata adalah= %f\n", *(q+3));
+			// q = hitung(1, 5, 14);
+			// printf("uk adalah= %f\n" , *(q+0));
+			// printf("dur adalah= %f\n" , *(q+1));
+			// printf("hpsp adalah= %f\n" , *(q+2));
+			// printf("intvdata adalah= %f\n", *(q+3));
 			std::cout << "sudah 30 detik" << std::endl;
 			t1 = t2;
 
@@ -256,6 +256,9 @@ void generic_handler(struct evhttp_request *req, void *arg)
 
 	std::string param1 = seglist[1];
 	std::string param2 = seglist[2];
+	std::string idInt;
+	idInt = convertidToInt(param1);
+
 	int uc1 = std::stoi( param1 );
 	int uc2 = std::stoi( param2 );
 	std::cout << "Convert" << param1 << std::endl;
@@ -269,10 +272,10 @@ void generic_handler(struct evhttp_request *req, void *arg)
 	serialPutchar (handle2, uc1);
 	serialPutchar (handle2, uc2);
 
-	std::string idalattt;
-	idalattt = convertid(uc1);
-	std::cout << "idalattt" << idalattt << std::endl;
-	UpdateStatus(idalattt, uc2);
+	// std::string idalattt;
+	// idalattt = convertid(uc1);
+	// std::cout << "idalattt" << idalattt << std::endl;
+	UpdateStatus(param1, uc2);
 	serialClose (handle2) ;
 	
 }
