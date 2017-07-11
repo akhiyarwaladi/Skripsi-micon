@@ -14,7 +14,7 @@ std::string convertidToInt(std::string id){
 	std::string idnode;
 	if (id == "590e00f72476bf2dbca3e394") idnode = 14;
 	
-	else if (id == "590e19d1ac49692798cdab4c") idnode = 15 ;
+	else if (id == "590e19d1ac49692798cdab4c") idnode = 15;
 	else if (id == "5930d241e733191d9836fb57") idnode = 16;
 
 	return idnode;
