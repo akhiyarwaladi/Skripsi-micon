@@ -110,7 +110,7 @@ void *runmin(void *varg) //min function
 			/////////////////////////////// store time data received //////////////////////////////////
 			auto a2 = std::chrono::high_resolution_clock::now();
 			if (idalat == 14){
-				idalatt = "590e00f72476bf2dbca3e394";
+				idalatt = convertid(idalat);
 				dataReceive[0]	= 0;
 				dataReceive[1]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				dataReceive[2]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
@@ -118,7 +118,7 @@ void *runmin(void *varg) //min function
 			}
 
 			else if(idalat == 15){
-				idalatt = "590e19d1ac49692798cdab4c";
+				idalatt = convertid(idalat);
 				dataReceive[0]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				dataReceive[1]	= 0;
 				dataReceive[2]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
@@ -126,7 +126,7 @@ void *runmin(void *varg) //min function
 			}
 
 			else if (idalat == 16){
-				idalatt = "5930d241e733191d9836fb57";
+				idalatt = convertid(idalat);;
 				dataReceive[0]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				dataReceive[1]	+= std::chrono::duration_cast<std::chrono::seconds>(a2 - a1).count();
 				dataReceive[2]	= 0;
@@ -199,27 +199,27 @@ void *runmin(void *varg) //min function
 		////////////////////// if data not received in time ///////////////////////////////
 		if (dataReceive[0] >= 60){
 
-			message = "590e00f72476bf2dbca3e394" + message;
+			message = "596b4265e19ddd256001d344" + message;
 			Notification(title, message);
-			UpdateNotif("590e00f72476bf2dbca3e394", 1);
+			UpdateNotif("596b4265e19ddd256001d344", 1);
 			message = " Tidak berfungsi";
 			dataReceive[0] = 0;
 
 		}
 		else if (dataReceive[1] >= 60){
 
-			message = "590e19d1ac49692798cdab4c" + message;
+			message = "596b6487e19ddd256001d347" + message;
 			Notification(title, message);
-			UpdateNotif("590e19d1ac49692798cdab4c", 1);
+			UpdateNotif("596b6487e19ddd256001d347", 1);
 			message = " Tidak berfungsi";
 			dataReceive[1] = 0;
 
 		}
 		else if (dataReceive[2] >= 60){
 
-			message = "5930d241e733191d9836fb57" + message;
+			message = "596b4288e19ddd256001d346" + message;
 			Notification(title, message);
-			UpdateNotif("5930d241e733191d9836fb57", 1);
+			UpdateNotif("596b4288e19ddd256001d346", 1);
 			message = " Tidak berfungsi";
 			dataReceive[2] = 0;
 
