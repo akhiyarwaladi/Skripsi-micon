@@ -12,10 +12,10 @@ std::string convertid(int id){
 std::string convertidToInt(std::string id){
 
 	std::string idnode;
-	if (id == "596b4265e19ddd256001d344") idnode = 14;
+	if (id == "596b4265e19ddd256001d344") idnode = "14";
 	
-	else if (id == "596b6487e19ddd256001d347") idnode = 15;
-	else if (id == "596b4288e19ddd256001d346") idnode = 16;
+	else if (id == "596b6487e19ddd256001d347") idnode = "15";
+	else if (id == "596b4288e19ddd256001d346") idnode = "16";
 
 	return idnode;
 }

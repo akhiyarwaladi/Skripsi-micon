@@ -26,11 +26,11 @@ void updateStatusAlat(double rssi, double battery, double idalat, double status)
 	printf("\n");
 }
 */
-static const char *BASE_URL		= "http://192.168.0.105:3000/api";
-static const char *payToServer	= "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
-static const char *payUpdate	= "device=590e009c2476bf2dbca3e393&status=%f";
-static const char *payUpdateNotif	= "device=590e009c2476bf2dbca3e393&notification=%f";
-static const char *payToNotif 	= "title=%s&message=%s&deviceid=590e009c2476bf2dbca3e393";
+static const char *BASE_URL		= "http://192.168.0.111:3000/api";
+static const char *payToServer	= "{\r\n  \"device\":\"59677346b89f4c3ec40c6d3a\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
+static const char *payUpdate	= "device=59677346b89f4c3ec40c6d3a&status=%f";
+static const char *payUpdateNotif	= "device=59677346b89f4c3ec40c6d3a&notification=%f";
+static const char *payToNotif 	= "title=%s&message=%s&deviceid=59677346b89f4c3ec40c6d3a";
 static const char *url 			= std::string(std::string(BASE_URL) + "/sensornode/%s/update").c_str();
 
 

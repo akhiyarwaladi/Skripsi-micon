@@ -256,13 +256,15 @@ void generic_handler(struct evhttp_request *req, void *arg)
 
 	std::string param1 = seglist[1];
 	std::string param2 = seglist[2];
+	std::cout << "ConvertID" << param1 << std::endl;
+	std::cout << "ConvertStatus" << param2 << std::endl;
+
 	std::string idInt;
 	idInt = convertidToInt(param1);
 
 	int uc1 = std::stoi( idInt );
 	int uc2 = std::stoi( param2 );
-	std::cout << "ConvertID" << param1 << std::endl;
-	std::cout << "ConvertStatus" << param2 << std::endl;
+
 
     evbuffer_add_printf(buf, "Requested: %s\n", param);
     evhttp_send_reply(req, HTTP_OK, "OK", buf);
