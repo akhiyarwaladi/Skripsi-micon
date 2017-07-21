@@ -26,13 +26,18 @@ void updateStatusAlat(double rssi, double battery, double idalat, double status)
 	printf("\n");
 }
 */
-static const char *BASE_URL		= "http://192.168.0.111:3000/api";
-static const char *payToServer	= "{\r\n  \"device\":\"59677346b89f4c3ec40c6d3a\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
-static const char *payUpdate	= "device=59677346b89f4c3ec40c6d3a&status=%f";
-static const char *payUpdateNotif	= "device=59677346b89f4c3ec40c6d3a&notification=%f";
-static const char *payToNotif 	= "title=%s&message=%s&deviceid=59677346b89f4c3ec40c6d3a";
-static const char *url 			= std::string(std::string(BASE_URL) + "/sensornode/%s/update").c_str();
+//static const char *BASE_IP		= "192.168.0.111";
+static const char *BASE_URL		= "http://192.168.0.102:3000/api";
 
+static const char *payToServer	= "{\r\n  \"device\":\"59677346b89f4c3ec40c6d3a\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
+static const char *payToNotif		= "title=%s&message=%s&deviceid=59677346b89f4c3ec40c6d3a";
+
+static const char *url_updateNode	= std::string(std::string(BASE_URL) + "/sensornode/%s/updates").c_str();
+static const char *payUpdateStatus	= "device=59677346b89f4c3ec40c6d3a&status=%f";
+static const char *payUpdateNotif	= "device=59677346b89f4c3ec40c6d3a&notification=%f";
+
+//static const char *url_updateIp 	= std::string(std::string(BASE_URL) + "/device/%s/updates").c_str();
+//static const char *payUpdateIpAddr	= "webaddr=%s";
 
 void DataToServer(std::string idnode, double humid, double temp, double waterlevel, double setPoint, double opTime, double uk){
 	CURL *hnd = curl_easy_init();
@@ -48,28 +53,27 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 	headers = curl_slist_append(headers, "content-type: application/json");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	char str[1000];
-	sprintf(str, payToServer, idnode.c_str(), setPoint, uk, opTime, humid, temp, waterlevel);
-	puts(str);
+	char str_DataToServer[1000] = "";
+	sprintf(str_DataToServer, payToServer, idnode.c_str(), setPoint, uk, opTime, humid, temp, waterlevel);
+	puts(str_DataToServer);
 
 	//curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"590e00f72476bf2dbca3e394\",\r\n\r\n  \"data\": {\r\n    \"humidity\": 40,\r\n    \"temperature\": 40,\r\n    \"waterlevel\": 5\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}");
-	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_DataToServer);
 	curl_easy_perform(hnd);
 }
 
 
 void UpdateStatus(std::string idnode, double status){
 	
-	
-	char ur[1000];
-	sprintf(ur, url, idnode.c_str());
-	puts(ur);
+	char url_UpdateStatus[1000] = "";
+	sprintf(url_UpdateStatus, url_updateNode, idnode.c_str());
+	puts(url_UpdateStatus);
 
 
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
-	curl_easy_setopt(hnd, CURLOPT_URL, ur);
+	curl_easy_setopt(hnd, CURLOPT_URL, url_UpdateStatus);
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
@@ -79,25 +83,27 @@ void UpdateStatus(std::string idnode, double status){
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	char str[1000];
-	sprintf(str, payUpdate, status);
-	puts(str);
+	char str_UpdateStatus[1000] = "";
+	sprintf(str_UpdateStatus, payUpdateStatus, status);
+	puts(str_UpdateStatus);
 
-	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_UpdateStatus);
 	curl_easy_perform(hnd);
+
 }
+
 void UpdateNotif(std::string idnode, double status){
 	
 	
-	char ur[1000];
-	sprintf(ur, url, idnode.c_str());
-	puts(ur);
+	char url_UpdateNotif[1000] = "";
+	sprintf(url_UpdateNotif, url_updateNode, idnode.c_str());
+	puts(url_UpdateNotif);
 
 
 	CURL *hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
-	curl_easy_setopt(hnd, CURLOPT_URL, ur);
+	curl_easy_setopt(hnd, CURLOPT_URL, url_UpdateNotif);
 
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
@@ -107,11 +113,11 @@ void UpdateNotif(std::string idnode, double status){
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	char str[1000];
-	sprintf(str, payUpdateNotif, status);
-	puts(str);
+	char str_UpdateNotif[1000] = "";
+	sprintf(str_UpdateNotif, payUpdateNotif, status);
+	puts(str_UpdateNotif);
 
-	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_UpdateNotif);
 	curl_easy_perform(hnd);
 }
 
@@ -130,11 +136,38 @@ void Notification(std::string title, std::string message){
 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	char str[1000];
-	sprintf(str, payToNotif, title.c_str(), message.c_str());
-	puts(str);
+	char str_Notification[1000] = "";
+	sprintf(str_Notification, payToNotif, title.c_str(), message.c_str());
+	puts(str_Notification);
 
-	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str);
+	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_Notification);
 	curl_easy_perform(hnd);
 }
+
+// void UpdateIpAddr(std::string ipAddr){
+// 	char url_UpdateIpAddr[1000] = "";
+// 	sprintf(url_UpdateIpAddr, url_updateIp, "59677346b89f4c3ec40c6d3a");
+// 	puts(url_UpdateIpAddr);
+
+// 	CURL *hnd = curl_easy_init();
+
+// 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
+// 	curl_easy_setopt(hnd, CURLOPT_URL, url_UpdateIpAddr);
+
+// 	struct curl_slist *headers = NULL;
+// 	headers = curl_slist_append(headers, "postman-token: 0abb0bfd-ef1f-ce14-655d-b33b956a6589");
+// 	headers = curl_slist_append(headers, "cache-control: no-cache");
+// 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
+// 	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
+// 	headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+// 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+// 	char str_UpdateIpAddr[1000] = "";
+// 	sprintf(str_UpdateIpAddr, payUpdateIpAddr, ipAddr.c_str());
+// 	puts(str_UpdateIpAddr);
+
+// 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_UpdateIpAddr);
+// 	curl_easy_perform(hnd);
+
+// }
 

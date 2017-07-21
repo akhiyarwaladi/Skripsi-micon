@@ -29,3 +29,9 @@
 #include <sys/queue.h>
 #include <err.h>
 #include <pthread.h>
+
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+#include <arpa/inet.h>

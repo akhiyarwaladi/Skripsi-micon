@@ -12,6 +12,9 @@ std::string getDate()
 
 void *runmin(void *varg) //min function
 {
+	// std::string ipAddr = getIpAddr()+":5555";
+	// std::cout << "ipAddr " << ipAddr << std::endl;
+	// UpdateIpAddr(ipAddr);
 	//////////////// initiate time counter //////////////
 	auto a1 = std::chrono::high_resolution_clock::now();
 	auto t1 = std::chrono::high_resolution_clock::now();
@@ -29,6 +32,7 @@ void *runmin(void *varg) //min function
 	////////////////////////// open and flush serialport /////////////////////////////////////
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
+	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -307,7 +311,10 @@ void *runmax(void *varg) //min function
 int main(){
 
 	std::ios::sync_with_stdio(false);
+
 	pthread_t tid1, tid2;
+
+
     printf("Start Threads\n");
     pthread_create(&tid1, NULL, runmin, (void*) "haha"); 
     pthread_create(&tid2, NULL, runmax, (void*) "hihi");
