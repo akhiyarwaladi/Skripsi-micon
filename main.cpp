@@ -10,6 +10,7 @@ std::string getDate()
     return str;
 }
 
+	
 void *runmin(void *varg) //min function
 {
 	// std::string ipAddr = getIpAddr()+":5555";
@@ -33,7 +34,7 @@ void *runmin(void *varg) //min function
 	handle = serialOpen("/dev/ttyACM0", 9600) ;
 	serialFlush (handle);
 	
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	////////////////////////////// prepare csv file //////////////////////////////////////////
