@@ -27,7 +27,7 @@ void updateStatusAlat(double rssi, double battery, double idalat, double status)
 }
 */
 //static const char *BASE_IP		= "192.168.0.111";
-static const char *BASE_URL		= "http://192.168.0.120:3000/api";
+static const char *BASE_URL		= "http://192.168.43.98:3000/api";
 
 static const char *payToServer	= "{\r\n  \"device\":\"597206a1487a43110490c0b0\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}";
 static const char *payToNotif		= "title=%s&message=%s&deviceid=597206a1487a43110490c0b0";
