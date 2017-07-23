@@ -220,7 +220,7 @@ void *runmin(void *varg) //min function
 			message = " Tidak berfungsi";
 			dataReceive[1] = 0;
 
-		}0
+		}
 		else if (dataReceive[2] >= 80){
 
 			message = "596b4288e19ddd256001d346" + message;
