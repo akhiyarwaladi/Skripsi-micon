@@ -29,7 +29,7 @@ void updateStatusAlat(double rssi, double battery, double idalat, double status)
 //static const char *BASE_IP		= "192.168.0.111";
 static const char *BASE_URL		= "http://192.168.43.98:3000/api";
 
-static const char *payToServer	= "{\r\n  \"device\":\"597206a1487a43110490c0b0\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  },\r\n }";
+static const char *payToServer	= "{\r\n  \"device\":\"597206a1487a43110490c0b0\",\r\n  \"sensornode\":\"%s\",\r\n  \"setPoint\": %f,\r\n  \"uk\": %f,\r\n  \"opTime\": %f,\r\n  \"data\": {\r\n    \"humidity\": %f,\r\n    \"temperature\": %f,\r\n    \"waterlevel\": %f\r\n  }\r\n }";
 static const char *payToNotif		= "title=%s&message=%s&deviceid=597206a1487a43110490c0b0";
 
 static const char *url_updateNode	= std::string(std::string(BASE_URL) + "/sensornode/%s/updates").c_str();
@@ -59,6 +59,8 @@ void DataToServer(std::string idnode, double humid, double temp, double waterlev
 
 	//curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\r\n  \"device\":\"590e009c2476bf2dbca3e393\",\r\n  \"sensornode\":\"590e00f72476bf2dbca3e394\",\r\n\r\n  \"data\": {\r\n    \"humidity\": 40,\r\n    \"temperature\": 40,\r\n    \"waterlevel\": 5\r\n  },\r\n  \"sensortype\": [\r\n    \"590f9508d71b1b270c77dfe4\",\r\n    \"590f954bd71b1b270c77dfe7\",\r\n    \"590f9598d71b1b270c77dfe8\"\r\n  ]\r\n}");
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_DataToServer);
+	FILE *f = fopen("out.txt", "wb");
+	curl_easy_setopt(hnd, CURLOPT_WRITEDATA, f);
 	curl_easy_perform(hnd);
 }
 
@@ -88,6 +90,8 @@ void UpdateStatus(std::string idnode, double status){
 	puts(str_UpdateStatus);
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_UpdateStatus);
+	FILE *f = fopen("out.txt", "wb");
+	curl_easy_setopt(hnd, CURLOPT_WRITEDATA, f);
 	curl_easy_perform(hnd);
 
 }
@@ -117,6 +121,8 @@ void UpdateNotif(std::string idnode, double status){
 	puts(str_UpdateNotif);
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_UpdateNotif);
+	FILE *f = fopen("out.txt", "wb");
+	curl_easy_setopt(hnd, CURLOPT_WRITEDATA, f);
 	curl_easy_perform(hnd);
 
 }
@@ -142,6 +148,8 @@ void Notification(std::string title, std::string message){
 	puts(str_Notification);
 
 	curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, str_Notification);
+	FILE *f = fopen("out.txt", "wb");
+	curl_easy_setopt(hnd, CURLOPT_WRITEDATA, f);
 	curl_easy_perform(hnd);
 
 }

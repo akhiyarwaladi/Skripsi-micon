@@ -84,6 +84,8 @@ float * hitung(float awal, float temp, float idalat)
 	headers = curl_slist_append(headers, "authorization: 5d55ed73dda2730ec3e01a5f8c631966");
 	headers = curl_slist_append(headers, "x-snow-token: SECRET_API_KEY");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+	//FILE *f = fopen("out.txt", "wb");
+	//curl_easy_setopt(hnd, CURLOPT_WRITEDATA, f);
 	curl_easy_perform(hnd);
 
     curl_easy_cleanup(hnd);
