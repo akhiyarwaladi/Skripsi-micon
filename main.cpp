@@ -26,12 +26,13 @@ void *runmin(void *varg) //min function
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
 	std::string idalattt;
-	int handle, battery, rssi, data, temp, idalat, avail, humid, tempe, dataReceive[5] = {0};
+	int handle, data, temp, idalat, avail, humid, tempe, dataReceive[5] = {0};
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	////////////////////////// open and flush serialport /////////////////////////////////////
-	handle = serialOpen("/dev/ttyACM0", 9600) ;
+	handle = serialOpen("/dev/ttyAMA0", 9600) ; //direct raspberry
+	//handle = serialOpen("/dev/ttyACM0", 9600) ; //use arduino mega
 	serialFlush (handle);
 	
 
@@ -42,7 +43,7 @@ void *runmin(void *varg) //min function
 	std::remove ("example.csv");
 	myfile.open ("example.csv");
 	// write the file headers
-    myfile << "idalat" << "," << "data" << "," << "rssi" << "," << "battery" << "," << "datetime" << std::endl;
+    myfile << "idalat" << "," << "data" << "," << "humidity" << "," << "temperature" << "," << "datetime" << std::endl;
     //////////////////////////////////////////////////////////////////////////////////////////
 
 	while(1){
@@ -96,7 +97,7 @@ void *runmin(void *varg) //min function
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////
-		if(avail == 5){
+		if(avail == 4){
 
 			/////////////////////////////// GET all data from serial /////////////////////////////////
 
@@ -104,8 +105,8 @@ void *runmin(void *varg) //min function
 			data 		= serialGetchar(handle) ;
 			humid 		= serialGetchar(handle) ;
 			tempe 		= serialGetchar(handle) ;
-			rssi 		= serialGetchar(handle) ;
-			battery 	= 50 ;
+			//rssi 		= serialGetchar(handle) ;
+			//battery 	= 50 ;
 
 			//////////////////////////////////////////////////////////////////////////////////////////
 					
@@ -141,7 +142,7 @@ void *runmin(void *varg) //min function
 			///////////////////////////////////////////////////////////////////////////////////////////
 
 			///////////////////////////////// write the needed data ///////////////////////////////////////
-			myfile << idalat << "," << data << "," << rssi << "," << battery << "," << getDate() << std::endl;
+			myfile << idalat << "," << data << "," << humid << "," << tempe << "," << getDate() << std::endl;
 			temp = 11 - data;
 			///////////////////////////////////////////////////////////////////////////////////////////////
 			
