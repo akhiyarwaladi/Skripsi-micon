@@ -203,7 +203,7 @@ void *runmin(void *varg) //min function
 		//////////////////////////////////////////////////////////////////////////////////
 		}
 		////////////////////// if data not received in time ///////////////////////////////
-		if (dataReceive[0] >= 60){
+		if (dataReceive[0] >= 80{
 
 			message = "596b4265e19ddd256001d344" + message;
 			Notification(title, message);
@@ -212,7 +212,7 @@ void *runmin(void *varg) //min function
 			dataReceive[0] = 0;
 
 		}
-		else if (dataReceive[1] >= 60){
+		else if (dataReceive[1] >= 80){
 
 			message = "596b6487e19ddd256001d347" + message;
 			Notification(title, message);
@@ -221,7 +221,7 @@ void *runmin(void *varg) //min function
 			dataReceive[1] = 0;
 
 		}
-		else if (dataReceive[2] >= 60){
+		else if (dataReceive[2] >= 80){
 
 			message = "596b4288e19ddd256001d346" + message;
 			Notification(title, message);
