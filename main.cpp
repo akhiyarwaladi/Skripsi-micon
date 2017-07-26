@@ -26,7 +26,7 @@ void *runmin(void *varg) //min function
 	std::string message = " Tidak berfungsi";
 	std::string idalatt;
 	std::string idalattt;
-	int handle, data, temp, idalat, avail, humid, tempe, dataReceive[5] = {0};
+	int handle, data, temp, idalat, avail, humid, tempe, dataReceive[5] = {0}, intvData = 1;
 	float awal = 0.0, OpTime, *q;
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -152,6 +152,7 @@ void *runmin(void *varg) //min function
 			printf("dur adalah= %f\n" , *(q+1));
 			printf("hpsp adalah= %f\n" , *(q+2));
 			printf("intvdata adalah= %f\n", *(q+3));
+			intvData = *(q+3);
 			
 			double dur1, dur2;
 			if( (*(q+0)) > 0 ){
@@ -208,7 +209,7 @@ void *runmin(void *varg) //min function
 		//////////////////////////////////////////////////////////////////////////////////
 		}
 		////////////////////// if data not received in time ///////////////////////////////
-		if (dataReceive[0] >= 80){
+		if (dataReceive[0] >= ((intvData*60)+20)){
 
 			message = "596b4265e19ddd256001d344" + message;
 			Notification(title, message);
@@ -217,7 +218,7 @@ void *runmin(void *varg) //min function
 			dataReceive[0] = 0;
 
 		}
-		else if (dataReceive[1] >= 80){
+		else if (dataReceive[1] >= ((intvData*60)+20)){
 
 			message = "596b6487e19ddd256001d347" + message;
 			Notification(title, message);
@@ -226,7 +227,7 @@ void *runmin(void *varg) //min function
 			dataReceive[1] = 0;
 
 		}
-		else if (dataReceive[2] >= 80){
+		else if (dataReceive[2] >= ((intvData*60)+20)){
 
 			message = "596b4288e19ddd256001d346" + message;
 			Notification(title, message);
