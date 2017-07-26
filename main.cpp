@@ -62,14 +62,14 @@ void *runmin(void *varg) //min function
 		if((std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()) == 30){
 			//Jalan();
 			
-			temp = 5;
-			q = hitung(awal, temp, 14);
-			printf("uk adalah= %f\n" , *(q+0));
-			printf("dur adalah= %f\n" , *(q+1));
-			printf("hpsp adalah= %f\n" , *(q+2));
-			//sendDataToServer(5, temp, *(q+0), 60, 14);
-			//publish(5, temp, uk, 60, 14);
-			DataToServer("596b4265e19ddd256001d344", 80, 90, 5, *(q+2), *(q+1), *(q+0));
+			// temp = 5;
+			// q = hitung(awal, temp, 14);
+			// printf("uk adalah= %f\n" , *(q+0));
+			// printf("dur adalah= %f\n" , *(q+1));
+			// printf("hpsp adalah= %f\n" , *(q+2));
+			// //sendDataToServer(5, temp, *(q+0), 60, 14);
+			// //publish(5, temp, uk, 60, 14);
+			// DataToServer("596b4265e19ddd256001d344", 80, 90, 5, *(q+2), *(q+1), *(q+0));
 			//UpdateStatus("590e00f72476bf2dbca3e394", 1);
 			
 			// q = hitung(1, 5, 14);
@@ -171,17 +171,22 @@ void *runmin(void *varg) //min function
 				serialPutchar (handle, dur2);
 				serialPutchar (handle, *(q+3));
 				
+				
 				DataToServer(idalatt, humid, tempe, temp, *(q+2), *(q+1), *(q+0));
-				awal = temp;
 				UpdateStatus(idalatt, 1);
 				UpdateNotif(idalatt, 0);
+				awal = temp;
+				
 			}
 			
 			else{
+
+				
 				DataToServer(idalatt, humid, tempe, temp, *(q+2), OpTime, *(q+0));
-				awal = temp;
 				UpdateStatus(idalatt, 0);
 				UpdateNotif(idalatt, 0);
+				awal = temp;
+				
 
 			}
 			////////////////////////////// end fuzzy calculation ///////////////////////////////////////////
