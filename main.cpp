@@ -281,7 +281,7 @@ void generic_handler(struct evhttp_request *req, void *arg)
     evbuffer_add_printf(buf, "Requested: %s\n", param);
     evhttp_send_reply(req, HTTP_OK, "OK", buf);
 
-    int handle2 = serialOpen("/dev/ttyACM0", 9600) ;
+    int handle2 = serialOpen("/dev/ttyAMA0", 9600) ;
 	serialFlush (handle2);
 
 	serialPutchar (handle2, uc1);
